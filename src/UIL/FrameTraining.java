@@ -9,20 +9,13 @@ package UIL;
 import BLL.FaceDetector;
 import BLL.Util;
 import java.awt.Graphics;
-import java.awt.HeadlessException;
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import org.bytedeco.javacpp.opencv_core.IplImage;
-import static org.bytedeco.javacpp.opencv_core.cvFlip;
-import org.bytedeco.javacpp.opencv_imgcodecs;
 import org.bytedeco.javacv.Frame;
 import org.bytedeco.javacv.FrameGrabber;
-import org.bytedeco.javacv.Java2DFrameConverter;
 import org.bytedeco.javacv.OpenCVFrameConverter;
 import org.bytedeco.javacv.VideoInputFrameGrabber;
 

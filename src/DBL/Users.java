@@ -15,11 +15,15 @@ import java.awt.image.BufferedImage;
 public class Users {
     private String name;
     private String address;
+    private String date;
     private int mobile; 
     private int account;
+    private int ID;
     private BufferedImage img1;
     private BufferedImage img2;
     private BufferedImage img3;
+    private float accountBal;
+    private float lastwidthdraw;
     
     /*
     *add the variable for the image to get and set it atleast two variables for the images
@@ -121,5 +125,61 @@ public class Users {
      */
     public void setImg3(BufferedImage img3) {
         this.img3 = img3;
+    }
+
+    /**
+     * @return the accountBal
+     */
+    public float getAccountBal() {
+        return accountBal;
+    }
+
+    /**
+     * @param accountBal the accountBal to set
+     */
+    public void setAccountBal(float accountBal) {
+        this.accountBal = accountBal;
+    }
+
+    /**
+     * @return the lastwidthdraw
+     */
+    public float getLastwidthdraw() {
+        return lastwidthdraw;
+    }
+
+    /**
+     * @param lastwidthdraw the lastwidthdraw to set
+     */
+    public void setLastwidthdraw(float lastwidthdraw) {
+        this.lastwidthdraw = lastwidthdraw;
+    }
+
+    /**
+     * @return the date
+     */
+    public String getDate() {
+        return date;
+    }
+
+    /**
+     * @param date the date to set
+     */
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    /**
+     * @return the ID
+     */
+    public int getID() {
+        return ID;
+    }
+
+    /**
+     * @param ID the ID to set
+     */
+    public void setID(int ID) {
+        this.ID = ID;
     }
 }

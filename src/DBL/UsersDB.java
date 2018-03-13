@@ -80,7 +80,7 @@ public class UsersDB {
         return rs;
     }
     
-        public int widthDrawmoney(Users obj)
+    public int widthDrawmoney(Users obj)
     {
         int row=0;
         try

@@ -36,7 +36,7 @@ public class UsersDB {
         int row=0;
         try
         {
-            String SQL="INSERT INTO accountdetails VALUES(,"+obj.getAccount()+","+obj.getDate()+""
+            String SQL="INSERT INTO accountdetails VALUES(last_insert_id(),"+obj.getAccount()+","+obj.getDate()+""
                     + ","+obj.getAccountBal()+","+obj.getLastwidthdraw()+")";//insert the last insert id to the first parameter
             DBConnection mycon=new DBConnection();
             row=mycon.addValues(SQL);

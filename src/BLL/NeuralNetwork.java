@@ -8,7 +8,7 @@ package BLL;
 import org.neuroph.core.*;
 import org.neuroph.core.data.DataSet;
 import org.neuroph.nnet.MultiLayerPerceptron;
-import org.neuroph.util.TransferFunctionType;
+//import org.neuroph.util.TransferFunctionType;
 /**
  *
  * @author User

@@ -9,6 +9,7 @@ package BLL;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.sql.SQLException;
 import org.bytedeco.javacpp.opencv_core.IplImage;
 import org.bytedeco.javacv.Frame;
 import org.bytedeco.javacv.Java2DFrameConverter;
@@ -39,7 +40,7 @@ public class Util {
         return iplImage;
     }
     
-    //method to resize the image to store
+    //method to resize the iplimage to store
     public BufferedImage resizeImage(IplImage src, int height, int width) 
     {
         BufferedImage img=ipltoBuffered(src);
@@ -49,6 +50,22 @@ public class Util {
         g2d.drawImage(tmp, 0, 0, null);
         g2d.dispose();
         return resized;
+    }
+    
+    //method to resize the bufferedimage
+    public BufferedImage resizeImage(BufferedImage src, int height, int width) 
+    {
+        Image tmp = src.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        BufferedImage resized = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_GRAY);
+        Graphics2D g2d = resized.createGraphics();
+        g2d.drawImage(tmp, 0, 0, null);
+        g2d.dispose();
+        return resized;
+    }
+    
+    public void logger()//do the logging functions
+    {
+        
     }
     
 }

@@ -32,7 +32,7 @@ import org.bytedeco.javacv.VideoInputFrameGrabber;
  *
  * @author User
  */
-public class FrameTraining extends javax.swing.JFrame {
+public class FrameNewcustomer extends javax.swing.JFrame {
 
     //definitions for image capture
     FrameGrabber grabber;
@@ -40,7 +40,7 @@ public class FrameTraining extends javax.swing.JFrame {
     OpenCVFrameConverter.ToIplImage converter=new OpenCVFrameConverter.ToIplImage();
     BufferedImage bImg,captured,result;
     BufferedImage histImg,custImage[];
-    int i;
+    int i,uid;
     
     class captureImage implements Runnable{
         protected volatile boolean runn = false;
@@ -76,25 +76,18 @@ public class FrameTraining extends javax.swing.JFrame {
             }
         }
         
-        /*public BufferedImage IpltoBuffered(IplImage src) //method to convert ipl to buffered
-        {
-            OpenCVFrameConverter.ToIplImage grabberConverter = new OpenCVFrameConverter.ToIplImage();
-            Java2DFrameConverter paintConverter = new Java2DFrameConverter();
-            Frame frame = grabberConverter.convert(src);
-            return paintConverter.getBufferedImage(frame,1);
-        }*/
-        
     }
     /**
      * Creates new form videoFrame
      */
-    public FrameTraining() {
+    public FrameNewcustomer() {
         initComponents();
         openWebcam();
         btnAdd.setEnabled(false);
         i=0;//for adding to custImage array
         custImage=new BufferedImage[3];//the image array
         txtAccountNumber.setEditable(false);
+        uid=newUserid();
     }
     private void openWebcam()//method to show the webcam from the runnable class
     {
@@ -155,6 +148,7 @@ public class FrameTraining extends javax.swing.JFrame {
         labelCaptured = new javax.swing.JLabel();
         labelNoimages = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
+        labelCapturedHist = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -241,7 +235,7 @@ public class FrameTraining extends javax.swing.JFrame {
             }
         });
 
-        labelCaptured.setText("Image");
+        labelCaptured.setText("Gray Image");
 
         labelNoimages.setText("No.of Images - ");
 
@@ -259,6 +253,8 @@ public class FrameTraining extends javax.swing.JFrame {
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
+        labelCapturedHist.setText("Equalized Image");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -267,20 +263,23 @@ public class FrameTraining extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(30, 30, 30)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(30, 30, 30)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnCapture, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnCapture, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(30, 30, 30)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(labelCaptured, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(labelCaptured, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(labelCapturedHist, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(labelNoimages, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(356, 356, 356)
                         .addComponent(jLabel2)))
@@ -297,18 +296,20 @@ public class FrameTraining extends javax.swing.JFrame {
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 283, Short.MAX_VALUE))
                 .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labelCaptured, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(btnCapture, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(labelNoimages))
-                        .addGap(0, 29, Short.MAX_VALUE)))
-                .addContainerGap())
+                                .addGap(2, 2, 2)
+                                .addComponent(labelNoimages))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(btnCapture, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
+                        .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(labelCaptured, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(labelCapturedHist, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         pack();
@@ -322,13 +323,20 @@ public class FrameTraining extends javax.swing.JFrame {
         {
             captured=bImg;
             result=fobj.detectFace(captured);
-            BufferedImage hist=pobj.histogramEqualization(result);
-            if(hist!=null){
-                labelCaptured.setIcon(new ImageIcon(hist));//remove this line
-            File out=new File("F:\\trial\\preProcess\\123Cature.jpg");
-            ImageIO.write(hist,"jpg", out);}
+            histImg=pobj.histogramEqualization(result);
+            if(histImg!=null)
+            {
+                labelCaptured.setIcon(new ImageIcon(result));
+                labelCapturedHist.setIcon(new ImageIcon(histImg));
+                btnAdd.setEnabled(true);
+            //File out=new File("F:\\trial\\preProcess\\123Cature.jpg");
+            //ImageIO.write(hist,"jpg", out);
+            }
             else
+            {
+                btnAdd.setEnabled(false);
                 JOptionPane.showMessageDialog(rootPane,"Try again please","ERROR",JOptionPane.ERROR_MESSAGE);
+            }
         }
         catch (Exception e) 
         {
@@ -350,7 +358,7 @@ public class FrameTraining extends javax.swing.JFrame {
         {
             JOptionPane.showMessageDialog(rootPane,"Enter Customer Mobile","ERROR",JOptionPane.ERROR_MESSAGE);
         }
-        else if(custImage.length!=1)
+        else if(i!=5)
         {
             JOptionPane.showMessageDialog(rootPane,"Capture images and add","ERROR",JOptionPane.ERROR_MESSAGE);
         }
@@ -364,7 +372,7 @@ public class FrameTraining extends javax.swing.JFrame {
                 uobj.setAddress(txtAddress.getText());
                 uobj.setMobile(Integer.parseInt(txtMobile.getText()));       
                 uobj.setAccount(Integer.parseInt(txtAccountNumber.getText()));
-                String date = new SimpleDateFormat("dd-MM-yyyy").format(new Date().toString());
+                String date = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
                 uobj.setDate(date);
                 int row=duobj.addCustomers(uobj);
                 int row2=duobj.addAccountdet(uobj);
@@ -386,24 +394,20 @@ public class FrameTraining extends javax.swing.JFrame {
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
 
-        int uid=newUserid();
         int noi=i+1;//count of images
-        Util uobj=new Util();
         try
         {
-            File output=new File(".\\trainingset\\"+uid+"_"+noi);
-            /*histImg=uobj=
-            ImageIO.write(captured,"jpg",output);*/
-            if(i!=3)
+            File output=new File(".\\trainingset\\"+uid+"_"+noi+".jpg");
+            if(i!=6)//look into this
             {
-                custImage[i]=captured;
+                ImageIO.write(histImg,"jpg",output);
                 labelNoimages.setText("No.of Images - "+noi);
-                if(i==2)
-                    JOptionPane.showMessageDialog(rootPane,"Training set Added","Training",JOptionPane.INFORMATION_MESSAGE);
+                if(i==5)//look into this
+                    JOptionPane.showMessageDialog(rootPane,"Training images Added","Added",JOptionPane.INFORMATION_MESSAGE);
                 i++;
             }
             else
-                JOptionPane.showMessageDialog(rootPane,"You have added the images","Training",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(rootPane,"You have added the images","Added",JOptionPane.ERROR_MESSAGE);
         }
         catch (Exception e)
         {
@@ -428,20 +432,20 @@ public class FrameTraining extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrameTraining.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameNewcustomer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrameTraining.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameNewcustomer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrameTraining.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameNewcustomer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrameTraining.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameNewcustomer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FrameTraining().setVisible(true);
+                new FrameNewcustomer().setVisible(true);
             }
         });
     }
@@ -458,6 +462,7 @@ public class FrameTraining extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel labelCaptured;
+    private javax.swing.JLabel labelCapturedHist;
     private javax.swing.JLabel labelNoimages;
     private javax.swing.JTextField txtAccountNumber;
     private javax.swing.JTextField txtAddress;

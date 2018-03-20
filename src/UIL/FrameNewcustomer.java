@@ -13,7 +13,10 @@ import DBL.Users;
 import DBL.UsersDB;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -84,7 +87,7 @@ public class FrameNewcustomer extends javax.swing.JFrame {
         initComponents();
         openWebcam();
         btnAdd.setEnabled(false);
-        i=0;//for adding to custImage array
+        i=0;//for adding to custImage
         custImage=new BufferedImage[3];//the image array
         txtAccountNumber.setEditable(false);
         uid=newUserid();
@@ -98,7 +101,7 @@ public class FrameNewcustomer extends javax.swing.JFrame {
         t.start();
     }
     
-    private int newUserid()
+    private int newUserid()//gets user id for the new user
     {
         ResultSet rs=null;
         int tempid=0,uid=0;
@@ -121,6 +124,21 @@ public class FrameNewcustomer extends javax.swing.JFrame {
             //do logger
         }
         return uid;
+    }
+    
+    private void writeId(int id)//method to write the id
+    {
+        try
+        {
+            String text=String.valueOf(id)+",";
+            PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(".\\trainingset\\traininglabels.txt", true)));
+            pw.print(text);
+            pw.close();
+        }
+        catch(Exception e)
+        {
+            //do logger
+        }
     }
 
     /**
@@ -401,6 +419,7 @@ public class FrameNewcustomer extends javax.swing.JFrame {
             if(i!=6)//look into this
             {
                 ImageIO.write(histImg,"jpg",output);
+                writeId(uid);
                 labelNoimages.setText("No.of Images - "+noi);
                 if(i==5)//look into this
                     JOptionPane.showMessageDialog(rootPane,"Training images Added","Added",JOptionPane.INFORMATION_MESSAGE);

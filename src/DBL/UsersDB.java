@@ -37,7 +37,7 @@ public class UsersDB {
         try
         {
             String SQL="INSERT INTO accountdetails VALUES(last_insert_id(),"+obj.getAccount()+","+obj.getDate()+""
-                    + ","+obj.getAccountBal()+","+obj.getLastwidthdraw()+")";//insert the last insert id to the first parameter
+                    + ",00,00)";
             DBConnection mycon=new DBConnection();
             row=mycon.addValues(SQL);
         }
@@ -95,6 +95,22 @@ public class UsersDB {
             e.printStackTrace();
         }
         return row;
+    }
+    
+    public ResultSet getAlldetails()
+    {
+        ResultSet rs=null;
+        try
+        {
+            String SQL="select*from customerdetails";
+            DBConnection mycon=new DBConnection();
+            rs=mycon.getValues(SQL);
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return rs;
     }
     
     

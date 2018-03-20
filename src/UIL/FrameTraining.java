@@ -7,9 +7,18 @@
 package UIL;
 
 import BLL.FaceDetector;
+import BLL.PreProcess;
 import BLL.Util;
+import DBL.Users;
+import DBL.UsersDB;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
@@ -30,7 +39,7 @@ public class FrameTraining extends javax.swing.JFrame {
     IplImage ipimg;
     OpenCVFrameConverter.ToIplImage converter=new OpenCVFrameConverter.ToIplImage();
     BufferedImage bImg,captured,result;
-    BufferedImage custImage[];
+    BufferedImage histImg,custImage[];
     int i;
     
     class captureImage implements Runnable{
@@ -94,6 +103,31 @@ public class FrameTraining extends javax.swing.JFrame {
         t.setDaemon(true);
         capt.runn=true;
         t.start();
+    }
+    
+    private int newUserid()
+    {
+        ResultSet rs=null;
+        int tempid=0,uid=0;
+        try
+        {
+            UsersDB udobj=new UsersDB();
+            rs=udobj.getAlldetails();
+            if(rs.next()==false)
+            {
+                uid=1;
+            }
+            while(rs.next())
+            {
+                tempid=rs.getInt(1);
+            }
+            uid=tempid+1;
+        }
+        catch(SQLException e)
+        {
+            //do logger
+        }
+        return uid;
     }
 
     /**
@@ -283,14 +317,16 @@ public class FrameTraining extends javax.swing.JFrame {
     private void btnCaptureActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCaptureActionPerformed
 
         FaceDetector fobj=new FaceDetector();
+        PreProcess pobj=new PreProcess();
         try 
         {
             captured=bImg;
             result=fobj.detectFace(captured);
-            /*File out=new File("F:\\trial\\preProcess\\AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA.jpg");
-            ImageIO.write(result,"jpg", out);*/
-            if(result!=null)
-                labelCaptured.setIcon(new ImageIcon(result));
+            BufferedImage hist=pobj.histogramEqualization(result);
+            if(hist!=null){
+                labelCaptured.setIcon(new ImageIcon(hist));//remove this line
+            File out=new File("F:\\trial\\preProcess\\123Cature.jpg");
+            ImageIO.write(hist,"jpg", out);}
             else
                 JOptionPane.showMessageDialog(rootPane,"Try again please","ERROR",JOptionPane.ERROR_MESSAGE);
         }
@@ -320,15 +356,44 @@ public class FrameTraining extends javax.swing.JFrame {
         }
         else
         {
-            //add to database
+            Users uobj=new Users();
+            try
+            {
+                UsersDB duobj=new UsersDB();
+                uobj.setName(txtName.getText());
+                uobj.setAddress(txtAddress.getText());
+                uobj.setMobile(Integer.parseInt(txtMobile.getText()));       
+                uobj.setAccount(Integer.parseInt(txtAccountNumber.getText()));
+                String date = new SimpleDateFormat("dd-MM-yyyy").format(new Date().toString());
+                uobj.setDate(date);
+                int row=duobj.addCustomers(uobj);
+                int row2=duobj.addAccountdet(uobj);
+                if(row>0&&row2>0)
+                {
+                    JOptionPane.showMessageDialog(rootPane,"Created successfully","Created user",JOptionPane.INFORMATION_MESSAGE);
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(rootPane,"Could not create user","ERROR",JOptionPane.ERROR_MESSAGE);
+                }
+            }
+            catch(Exception e)
+            {
+                //do logger
+            }
         }
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
 
-        int noi=i+1;
+        int uid=newUserid();
+        int noi=i+1;//count of images
+        Util uobj=new Util();
         try
         {
+            File output=new File(".\\trainingset\\"+uid+"_"+noi);
+            /*histImg=uobj=
+            ImageIO.write(captured,"jpg",output);*/
             if(i!=3)
             {
                 custImage[i]=captured;

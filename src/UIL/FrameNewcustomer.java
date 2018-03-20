@@ -43,7 +43,7 @@ public class FrameNewcustomer extends javax.swing.JFrame {
     OpenCVFrameConverter.ToIplImage converter=new OpenCVFrameConverter.ToIplImage();
     BufferedImage bImg,captured,result;
     BufferedImage histImg,custImage[];
-    int i,uid;
+    int i,uid,noi;
     
     class captureImage implements Runnable{
         protected volatile boolean runn = false;
@@ -83,14 +83,16 @@ public class FrameNewcustomer extends javax.swing.JFrame {
     /**
      * Creates new form videoFrame
      */
-    public FrameNewcustomer() {
+    public FrameNewcustomer() {//constructor
         initComponents();
         openWebcam();
         btnAdd.setEnabled(false);
         i=0;//for adding to custImage
+        noi=0;
         custImage=new BufferedImage[3];//the image array
         txtAccountNumber.setEditable(false);
         uid=newUserid();
+        generateAccount();
     }
     private void openWebcam()//method to show the webcam from the runnable class
     {
@@ -139,6 +141,15 @@ public class FrameNewcustomer extends javax.swing.JFrame {
         {
             //do logger
         }
+    }
+    
+    private void generateAccount()//generate account number
+    {
+        String date = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+        String acc=date.replace("-","");
+        String num=String.valueOf(uid);
+        txtAccountNumber.setText(acc+num);
+        txtAccountNumber.setEditable(false);
     }
 
     /**
@@ -376,7 +387,7 @@ public class FrameNewcustomer extends javax.swing.JFrame {
         {
             JOptionPane.showMessageDialog(rootPane,"Enter Customer Mobile","ERROR",JOptionPane.ERROR_MESSAGE);
         }
-        else if(i!=5)
+        else if(noi!=5)
         {
             JOptionPane.showMessageDialog(rootPane,"Capture images and add","ERROR",JOptionPane.ERROR_MESSAGE);
         }
@@ -397,6 +408,9 @@ public class FrameNewcustomer extends javax.swing.JFrame {
                 if(row>0&&row2>0)
                 {
                     JOptionPane.showMessageDialog(rootPane,"Created successfully","Created user",JOptionPane.INFORMATION_MESSAGE);
+                    FrameAdministrator aobj=new FrameAdministrator();
+                    aobj.show();
+                    this.dispose();
                 }
                 else
                 {
@@ -412,18 +426,20 @@ public class FrameNewcustomer extends javax.swing.JFrame {
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
 
-        int noi=i+1;//count of images
+        
+        noi=noi+1;//count of images
         try
         {
-            File output=new File(".\\trainingset\\"+uid+"_"+noi+".jpg");
-            if(i!=6)//look into this
+            if(noi<6)
             {
+                
+                File output=new File(".\\trainingset\\"+uid+"_"+noi+".jpg");
                 ImageIO.write(histImg,"jpg",output);
-                writeId(uid);
+                writeId(uid);//method to write the labels
                 labelNoimages.setText("No.of Images - "+noi);
-                if(i==5)//look into this
+                if(noi==5)
                     JOptionPane.showMessageDialog(rootPane,"Training images Added","Added",JOptionPane.INFORMATION_MESSAGE);
-                i++;
+                //i++;
             }
             else
                 JOptionPane.showMessageDialog(rootPane,"You have added the images","Added",JOptionPane.ERROR_MESSAGE);

@@ -150,6 +150,11 @@ public class FrameRecognizer extends javax.swing.JFrame {
         btnFileimage.setFocusable(false);
         btnFileimage.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnFileimage.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnFileimage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFileimageActionPerformed(evt);
+            }
+        });
         jToolBar1.add(btnFileimage);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -207,7 +212,7 @@ public class FrameRecognizer extends javax.swing.JFrame {
 
         if(txtAccountNum.getText().isEmpty())
         {
-            JOptionPane.showMessageDialog(null,"Please enter your account number and try again","ERROR",JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"Please enter your PIN and try again","ERROR",JOptionPane.ERROR_MESSAGE);
         }
         else
         {
@@ -242,6 +247,10 @@ public class FrameRecognizer extends javax.swing.JFrame {
             evt.consume();
         }
     }//GEN-LAST:event_txtAccountNumKeyTyped
+
+    private void btnFileimageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFileimageActionPerformed
+        
+    }//GEN-LAST:event_btnFileimageActionPerformed
 
     /**
      * @param args the command line arguments

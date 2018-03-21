@@ -385,7 +385,11 @@ public class FrameNewcustomer extends javax.swing.JFrame {
         }
         else if(txtMobile.getText().isEmpty())
         {
-            JOptionPane.showMessageDialog(rootPane,"Enter Customer Mobile","ERROR",JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(rootPane,"Enter valid mobile no","ERROR",JOptionPane.ERROR_MESSAGE);
+        }
+        else if(txtMobile.getText().length()!=10)
+        {
+            JOptionPane.showMessageDialog(rootPane,"Enter valid mobile no","ERROR",JOptionPane.ERROR_MESSAGE);
         }
         else if(noi!=5)
         {
@@ -409,7 +413,7 @@ public class FrameNewcustomer extends javax.swing.JFrame {
                 {
                     JOptionPane.showMessageDialog(rootPane,"Created successfully","Created user",JOptionPane.INFORMATION_MESSAGE);
                     FrameAdministrator aobj=new FrameAdministrator();
-                    aobj.show();
+                    aobj.show();     
                     this.dispose();
                 }
                 else

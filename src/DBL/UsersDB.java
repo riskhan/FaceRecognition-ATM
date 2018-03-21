@@ -36,7 +36,7 @@ public class UsersDB {
         int row=0;
         try
         {
-            String SQL="INSERT INTO accountdetails VALUES((SELECT MAX(id) FROM customerdetails),"+obj.getAccount()+","+obj.getDate()+""
+            String SQL="INSERT INTO accountdetails VALUES((SELECT MAX(id) FROM customerdetails),"+obj.getAccount()+",1234,"+obj.getDate()+""
                     + ",00,00)";
             DBConnection mycon=new DBConnection();
             row=mycon.addValues(SQL);

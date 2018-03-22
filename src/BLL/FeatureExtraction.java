@@ -12,8 +12,6 @@ package BLL;
  */
 public class FeatureExtraction {
     
-    /*
-    *find the method for PCA eigen values
-    */
+    
     
 }

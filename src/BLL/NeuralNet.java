@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.util.Arrays;
 import javax.imageio.ImageIO;
 import org.neuroph.core.*;
 import org.neuroph.core.data.DataSet;
@@ -45,11 +46,13 @@ public class NeuralNet {
         }
     };
     
-    
+    /**
+    * @param outputSize the size of the output(the number of customers)
+    */
     public void createNetwork(int outputSize)//create the neural network
     {
-        String name="";
-        double id;
+        String imgName="",imgId="";
+        int id,x;
         DataSet trainingSet=new DataSet(80, outputSize);//initialize the dataset
         BufferedImage img=null;
         if(dir.isDirectory())
@@ -59,7 +62,13 @@ public class NeuralNet {
                 try
                 {
                     img=ImageIO.read(f);
+                    imgName=f.getName();//get the name of the image
+                    imgId=imgName.substring(0, 1);//get the id of the image
+                    id=Integer.parseInt(imgId);
                     double[]output=new double[outputSize];
+                    Arrays.fill(output,0);
+                    output[id-1]=1;//create the output of the inputs
+                    
                     
                     /*do the gabor filtering and extract the features and put to dataset*/
                 }

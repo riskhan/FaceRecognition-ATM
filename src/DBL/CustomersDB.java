@@ -12,9 +12,9 @@ import java.sql.ResultSet;
  *
  * @author User
  */
-public class UsersDB {
+public class CustomersDB {
     
-    public int addCustomers(Users obj)
+    public int addCustomers(Customers obj)
     {
         int row=0;
         try
@@ -31,7 +31,7 @@ public class UsersDB {
         return row;
     }
     
-    public int addAccountdet(Users obj)
+    public int addAccountdet(Customers obj)
     {
         int row=0;
         try
@@ -48,7 +48,7 @@ public class UsersDB {
         return row;
     }
     
-    public ResultSet getDetails(Users obj)
+    public ResultSet getDetails(Customers obj)
     {
         ResultSet rs=null;
         try
@@ -64,7 +64,7 @@ public class UsersDB {
         return rs;
     }
     
-    public ResultSet getAccountdetails(Users obj)
+    public ResultSet getAccountdetails(Customers obj)
     {
         ResultSet rs=null;
         try
@@ -80,7 +80,7 @@ public class UsersDB {
         return rs;
     }
     
-    public int widthDrawmoney(Users obj)
+    public int widthDrawmoney(Customers obj)
     {
         int row=0;
         try

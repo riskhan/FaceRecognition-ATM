@@ -9,8 +9,8 @@ package UIL;
 import BLL.FaceDetector;
 import BLL.PreProcess;
 import BLL.Util;
-import DBL.Users;
-import DBL.UsersDB;
+import DBL.Customers;
+import DBL.CustomersDB;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.BufferedWriter;
@@ -109,7 +109,7 @@ public class FrameNewcustomer extends javax.swing.JFrame {
         int tempid=0,uid=0;
         try
         {
-            UsersDB udobj=new UsersDB();
+            CustomersDB udobj=new CustomersDB();
             rs=udobj.getAlldetails();
             if(rs.next()==false)
             {
@@ -397,10 +397,10 @@ public class FrameNewcustomer extends javax.swing.JFrame {
         }
         else
         {
-            Users uobj=new Users();
+            Customers uobj=new Customers();
             try
             {
-                UsersDB duobj=new UsersDB();
+                CustomersDB duobj=new CustomersDB();
                 uobj.setName(txtName.getText());
                 uobj.setAddress(txtAddress.getText());
                 uobj.setMobile(Integer.parseInt(txtMobile.getText()));       

@@ -12,7 +12,7 @@ import java.awt.image.BufferedImage;
  *
  * @author User
  */
-public class Users {
+public class Customers {
     private String name;
     private String address;
     private String date;

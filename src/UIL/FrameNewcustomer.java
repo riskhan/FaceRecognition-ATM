@@ -12,6 +12,7 @@ import BLL.Util;
 import DBL.Customers;
 import DBL.CustomersDB;
 import java.awt.Graphics;
+import java.awt.HeadlessException;
 import java.awt.image.BufferedImage;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -43,7 +44,7 @@ public class FrameNewcustomer extends javax.swing.JFrame {
     OpenCVFrameConverter.ToIplImage converter=new OpenCVFrameConverter.ToIplImage();
     BufferedImage bImg,captured,result;
     BufferedImage histImg,custImage[];
-    int i,uid,noi;
+    static int i,uid,noi;
     
     class captureImage implements Runnable{
         protected volatile boolean runn = false;
@@ -106,26 +107,31 @@ public class FrameNewcustomer extends javax.swing.JFrame {
     private int newUserid()//gets user id for the new user
     {
         ResultSet rs=null;
-        int tempid=0,uid=0;
+        int tempid=0,usid=0;
         try
         {
             CustomersDB udobj=new CustomersDB();
             rs=udobj.getAlldetails();
-            if(rs.next()==false)
+            if(rs.next() == false)
             {
-                uid=1;
+                System.out.println("Empty");
+                usid=1;
             }
-            while(rs.next())
+            else
             {
-                tempid=rs.getInt(1);
+                do
+                {
+                    tempid=rs.getInt(1);
+                }
+                while(rs.next());
             }
-            uid=tempid+1;
+            usid=tempid+1;
         }
         catch(SQLException e)
         {
             //do logger
         }
-        return uid;
+        return usid;
     }
     
     private void writeId(int id)//method to write the id
@@ -421,9 +427,9 @@ public class FrameNewcustomer extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(rootPane,"Could not create user","ERROR",JOptionPane.ERROR_MESSAGE);
                 }
             }
-            catch(Exception e)
+            catch(NumberFormatException | HeadlessException e)
             {
-                //do logger
+                JOptionPane.showMessageDialog(rootPane,"Could not create user"+e,"ERROR",JOptionPane.ERROR_MESSAGE);
             }
         }
     }//GEN-LAST:event_btnSaveActionPerformed

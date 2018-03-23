@@ -8,6 +8,7 @@ package DBL;
 
 import java.sql.ResultSet;
 
+
 /**
  *
  * @author User
@@ -19,7 +20,7 @@ public class CustomersDB {
         int row=0;
         try
         {
-            String SQL="INSERT INTO customerdetails(CName,CAdd,Mobile)VALUES('"+obj.getName()+"','"+obj.getAddress()+"',"
+            String SQL="INSERT INTO customerdetails VALUES(null,'"+obj.getName()+"','"+obj.getAddress()+"',"
                     + "'"+obj.getMobile()+"')";
             DBConnection mycon=new DBConnection();
             row=mycon.addValues(SQL);

@@ -10,7 +10,10 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 import org.neuroph.core.*;
 import org.neuroph.core.data.DataSet;
 import org.neuroph.core.data.DataSetRow;
@@ -30,13 +33,14 @@ import org.neuroph.util.TransferFunctionType;
  */
 public class NeuralNet {
     
-    static File dir = new File(".\\trainingset");
+     //Logger logger = Logger.getLogger(NeuralNet.class.getName());
+     File dir = new File(".\\trainingset");
   
-    static final String[] extensions = new String[]{//the file extensions
+     final String[] extensions = new String[]{//the file extensions
         "gif", "png", "bmp","jpg"
     };
     
-    static final FilenameFilter imgFilter = new FilenameFilter() {//to filter the directory with images
+    final FilenameFilter imgFilter = new FilenameFilter() {//to filter the directory with images
 
         @Override
         public boolean accept(final File dir, final String name) {
@@ -53,7 +57,7 @@ public class NeuralNet {
      * This method creates the training set
      * @param outputSize the size of the output(the number of customers)
      */
-    public static void createTrainingset(int outputSize)
+    public void createTrainingset(int outputSize)
     {
         String imgName,imgId;
         int id,x;
@@ -65,54 +69,63 @@ public class NeuralNet {
             {
                 try
                 {
-                    img=ImageIO.read(f);
-                    imgName=f.getName();//get the name of the image
-                    imgId=imgName.substring(0, 1);//get the id of the image by getting the first letter of the image
-                    id=Integer.parseInt(imgId);
-                    //to create the output array
+                    img = ImageIO.read(f);
+                    imgName = f.getName();//name of the image
+                    imgId = imgName.substring(0, 1);//id of the image by getting the first letter of the image
+                    id = Integer.parseInt(imgId);
+                    
                     double[]output=new double[outputSize];
                     Arrays.fill(output,0);
                     output[id-1]=1;
-                    //to create the input array
+                    
                     double []input=new double[80];
                     /*do the gabor filtering and extract the features and put to dataset*/
-                    //to add new input row to the network
-                    trainingSet.addRow(new DataSetRow(input,new double[]{2,35,4,5,6}));
+
+                    trainingSet.addRow(new DataSetRow(input,output));
+                    System.out.println((output.length));
                 }
                 catch(IOException e)
                 {
-                    //logger
+                    //logger.log(Level.SEVERE,"Cannot create the dataset");//remove all the static
                 }
             }
         }
-        Normalizer norm=new MaxMinNormalizer();
-        norm.normalize(trainingSet);
+        trainingSet.normalize();
         trainingSet.saveAsTxt("trainingdataSet.txt",",");
         
     }
     
     
-    public void trainNetwork(int outputSize,int hidden,double lrate,double momentum)
+    public static void trainNetwork(int outputSize,int hidden,double lrate,double momentum)
     {
-        File trainingSet=new File(".\\trainingset\\trainingdataSet.txt");
-        DataSet training = null;
-        MultiLayerPerceptron neuralNet = new MultiLayerPerceptron(TransferFunctionType.SIGMOID,80,hidden ,outputSize);
+        File trainingFile=new File(".\\trainingdataSet.txt");
+        DataSet trainingSet = null;
+        if(trainingFile.exists())
+        {
+            trainingSet=DataSet.load(".\\trainingdataSet.txt");
+            if(trainingSet.getOutputSize()!=outputSize)
+            {
+                JOptionPane.showMessageDialog(null,"Output sizes dont match create/load dataset first","ERROR",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null,"No dataset found","ERROR",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+        //int outputSize=0;
+        //outputSize=training.getOutputSize();
+        MultiLayerPerceptron neuralNet = new MultiLayerPerceptron(TransferFunctionType.SIGMOID,81,hidden ,outputSize);
         MomentumBackpropagation backProp = new MomentumBackpropagation() ;
         backProp.setLearningRate(lrate);
         backProp.setMomentum(momentum);
         backProp.setMaxError(0.001);
         backProp.setMaxIterations(10000);
         
-        if(trainingSet.exists())
-        {
-            training=DataSet.load(".\\trainingset\\trainingdataSet.txt");
-        }
-        else
-        {
-            createTrainingset(outputSize);
-        }
+        
         neuralNet.setLearningRule(backProp);
-        neuralNet.learn(training);
+        neuralNet.learn(trainingSet);
     }
     
     /**
@@ -139,11 +152,9 @@ public class NeuralNet {
         id=high+1;
         return id;
     }
-    
-    
+
     public static void main(String args[])
     {
-        createTrainingset(5);
+        trainNetwork(3,3,0.2,0.7);
     }
-
 }

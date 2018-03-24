@@ -19,6 +19,7 @@ public class Customers {
     private int mobile; 
     private int account;
     private int ID;
+    private int pin;
     private BufferedImage img1;
     private BufferedImage img2;
     private BufferedImage img3;
@@ -181,5 +182,19 @@ public class Customers {
      */
     public void setID(int ID) {
         this.ID = ID;
+    }
+
+    /**
+     * @return the pin
+     */
+    public int getPin() {
+        return pin;
+    }
+
+    /**
+     * @param pin the pin to set
+     */
+    public void setPin(int pin) {
+        this.pin = pin;
     }
 }

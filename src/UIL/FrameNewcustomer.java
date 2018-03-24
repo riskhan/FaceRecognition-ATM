@@ -24,6 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import org.bytedeco.javacpp.opencv_core.IplImage;
@@ -84,7 +85,7 @@ public class FrameNewcustomer extends javax.swing.JFrame {
     /**
      * Creates new form videoFrame
      */
-    public FrameNewcustomer() {//constructor
+    public FrameNewcustomer() {//constructor    
         initComponents();
         openWebcam();
         btnAdd.setEnabled(false);
@@ -397,7 +398,7 @@ public class FrameNewcustomer extends javax.swing.JFrame {
         {
             JOptionPane.showMessageDialog(rootPane,"Enter valid mobile no","ERROR",JOptionPane.ERROR_MESSAGE);
         }
-        else if(noi!=5)
+        else if(noi!=8)
         {
             JOptionPane.showMessageDialog(rootPane,"Capture images and add","ERROR",JOptionPane.ERROR_MESSAGE);
         }
@@ -440,14 +441,14 @@ public class FrameNewcustomer extends javax.swing.JFrame {
         noi=noi+1;//count of images
         try
         {
-            if(noi<6)
+            if(noi<9)
             {
                 
                 File output=new File(".\\trainingset\\"+uid+"_"+noi+".jpg");
                 ImageIO.write(histImg,"jpg",output);
                 writeId(uid);//method to write the labels
                 labelNoimages.setText("No.of Images - "+noi);
-                if(noi==5)
+                if(noi==8)
                     JOptionPane.showMessageDialog(rootPane,"Training images Added","Added",JOptionPane.INFORMATION_MESSAGE);
                 //i++;
             }

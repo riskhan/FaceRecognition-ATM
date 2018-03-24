@@ -7,16 +7,27 @@
 package UIL;
 
 import BLL.FaceDetector;
+import BLL.NeuralNet;
+import BLL.Util;
+import BLL.PreProcess;
+import DBL.Customers;
+import DBL.CustomersDB;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import org.bytedeco.javacpp.opencv_core.IplImage;
 import org.bytedeco.javacv.Frame;
 import org.bytedeco.javacv.FrameGrabber;
-import org.bytedeco.javacv.Java2DFrameConverter;
 import org.bytedeco.javacv.OpenCVFrameConverter;
 import org.bytedeco.javacv.VideoInputFrameGrabber;
 
@@ -29,12 +40,14 @@ public class FrameRecognizer extends javax.swing.JFrame {
     FrameGrabber grabber;
     IplImage ipimg;
     OpenCVFrameConverter.ToIplImage converter=new OpenCVFrameConverter.ToIplImage();
-    BufferedImage bImg,captured,result;
-    
+    BufferedImage bImg,captured,detected,hist;
+    File file;
+    String name,address;int mobile,acc;float bal,with;
     
     class captureImage implements Runnable{
         protected volatile boolean runn = false;
         protected volatile FrameGrabber gr;
+        Util uobj=new Util();
         @Override
         public void run() {
             try
@@ -48,7 +61,7 @@ public class FrameRecognizer extends javax.swing.JFrame {
                     if(ipimg!=null)
                     {
                         //cvFlip(ipimg, ipimg, 1);
-                        bImg=IpltoBuffered(ipimg);
+                        bImg=uobj.ipltoBuffered(ipimg);
                         Graphics g=jPanel1.getGraphics();
                         if (g.drawImage(bImg, 0, 0, getWidth(), getHeight() -150 , 0, 0, bImg.getWidth(), bImg.getHeight(), null))
                         if(runn == false)
@@ -63,16 +76,7 @@ public class FrameRecognizer extends javax.swing.JFrame {
             {
                  e.printStackTrace();
             }
-        }
-        
-        public BufferedImage IpltoBuffered(IplImage src) 
-        {
-            OpenCVFrameConverter.ToIplImage grabberConverter = new OpenCVFrameConverter.ToIplImage();
-            Java2DFrameConverter paintConverter = new Java2DFrameConverter();
-            Frame frame = grabberConverter.convert(src);
-            return paintConverter.getBufferedImage(frame,1);
-        }
-        
+        }    
     }
     /**
      * Creates new form videoFrame
@@ -81,6 +85,7 @@ public class FrameRecognizer extends javax.swing.JFrame {
         initComponents();
         capture();
     }
+    
     private void capture()
     {
         captureImage capt=new captureImage();
@@ -88,6 +93,67 @@ public class FrameRecognizer extends javax.swing.JFrame {
         t.setDaemon(true);
         capt.runn=true;
         t.start();
+    }
+    
+    private void openFile()//alternative to real time detection
+    {
+        final JFrame frame = new JFrame("Select image to be recognized");
+        JFileChooser fc=new JFileChooser(".\\trainingset");
+        int returnVal = fc.showOpenDialog(frame);
+        if(returnVal==JFileChooser.APPROVE_OPTION)
+        {
+            file=fc.getSelectedFile();
+            try
+            {
+                String filename=file.toString();
+            }
+            catch(Exception e)
+            {
+                //Logger.getLogger(GaborFilterImageFrame.class.getName()).log(Level.SEVERE, null, e);
+            }
+        }
+    }
+    
+    /**
+     * this is the method to recognize the faces
+     */
+    private void recognizeFaces(BufferedImage newImage)//get the buffered image as parameter
+    {
+        NeuralNet nnet=new NeuralNet();
+        ResultSet rs=null,rs2=null;
+        Customers cobj=new Customers();
+        double feature[]=new double[80];
+        int id=1,pin=0;
+        //do the gabor filtering
+        //id=nnet.recognizeFaces(feature);//get the recognized id
+        pin=Integer.parseInt(txtPIN.getText());
+        cobj.setID(id);
+        cobj.setPin(pin);
+        try
+        {
+            CustomersDB cdobj=new CustomersDB();
+            rs=cdobj.getAccountdetails(cobj);
+            rs2=cdobj.getDetails(cobj);
+            while(rs.next())
+            {
+                acc=rs.getInt(2);
+                bal=rs.getFloat(5);
+                with=rs.getFloat(6);
+            }
+            while(rs2.next())
+            {
+                name=rs2.getString(2);
+                address=rs2.getString(3);
+                mobile=rs2.getInt(4);
+            }
+        }
+        catch(SQLException e)
+        {
+            JOptionPane.showMessageDialog(null,"cannot retrive values","ERROR",JOptionPane.ERROR_MESSAGE);
+        }
+        FrameAuthenticate auth=new FrameAuthenticate(name, address, mobile, acc,bal, with);
+        auth.show();
+        this.dispose();
     }
 
     /**
@@ -103,9 +169,10 @@ public class FrameRecognizer extends javax.swing.JFrame {
         btnVerify = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        txtAccountNum = new javax.swing.JTextField();
+        txtPIN = new javax.swing.JTextField();
         jToolBar1 = new javax.swing.JToolBar();
         btnFileimage = new javax.swing.JButton();
+        btnGotologin = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -136,17 +203,17 @@ public class FrameRecognizer extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         jLabel2.setText("RECOGNIZE YOURSELF");
 
-        txtAccountNum.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        txtAccountNum.setToolTipText("Enter your account number and verify");
-        txtAccountNum.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtPIN.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtPIN.setToolTipText("Enter your account number and verify");
+        txtPIN.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtAccountNumKeyTyped(evt);
+                txtPINKeyTyped(evt);
             }
         });
 
         jToolBar1.setRollover(true);
 
-        btnFileimage.setText("File image");
+        btnFileimage.setText("File");
         btnFileimage.setFocusable(false);
         btnFileimage.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnFileimage.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -157,35 +224,45 @@ public class FrameRecognizer extends javax.swing.JFrame {
         });
         jToolBar1.add(btnFileimage);
 
+        btnGotologin.setText("login");
+        btnGotologin.setFocusable(false);
+        btnGotologin.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnGotologin.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnGotologin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGotologinActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btnGotologin);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(txtPIN, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(136, 136, 136))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(70, 70, 70)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(219, 219, 219)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(41, 41, 41)
-                                .addComponent(jLabel1))))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(244, 244, 244)
-                        .addComponent(btnVerify, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnVerify, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(234, 234, 234)
+                        .addComponent(jLabel2))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(278, 278, 278)
+                        .addComponent(jLabel1)))
                 .addContainerGap(70, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(txtAccountNum, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(134, 134, 134))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -197,7 +274,7 @@ public class FrameRecognizer extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(txtAccountNum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtPIN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnVerify, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20)
@@ -210,7 +287,9 @@ public class FrameRecognizer extends javax.swing.JFrame {
 
     private void btnVerifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerifyActionPerformed
 
-        if(txtAccountNum.getText().isEmpty())
+        PreProcess pobj=new PreProcess();
+        
+        if(txtPIN.getText().isEmpty())
         {
             JOptionPane.showMessageDialog(null,"Please enter your PIN and try again","ERROR",JOptionPane.ERROR_MESSAGE);
         }
@@ -220,14 +299,15 @@ public class FrameRecognizer extends javax.swing.JFrame {
             {
                 FaceDetector obj=new FaceDetector();
                 captured=bImg;
-                result=obj.detectFace(captured);
-                if(result==null)
+                detected=obj.detectFace(captured);
+                if(detected==null)
                 {
                     JOptionPane.showMessageDialog(null,"Please capture again","ERROR",JOptionPane.ERROR_MESSAGE);
                 }
                 else
                 {
-                    //complete the function
+                    hist=pobj.histogramEqualization(detected);
+                    recognizeFaces(hist);
                 }
                 
             } 
@@ -238,7 +318,7 @@ public class FrameRecognizer extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnVerifyActionPerformed
 
-    private void txtAccountNumKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtAccountNumKeyTyped
+    private void txtPINKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPINKeyTyped
 
         char enter = evt.getKeyChar();
         if(!(Character.isDigit(enter) || enter==KeyEvent.VK_BACK_SPACE || enter==KeyEvent.VK_DELETE || enter==KeyEvent.VK_PERIOD))
@@ -246,11 +326,34 @@ public class FrameRecognizer extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null,"enter number values only");
             evt.consume();
         }
-    }//GEN-LAST:event_txtAccountNumKeyTyped
+    }//GEN-LAST:event_txtPINKeyTyped
 
     private void btnFileimageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFileimageActionPerformed
-        
+
+        if(txtPIN.getText().isEmpty())
+        {
+            JOptionPane.showMessageDialog(null,"Please enter your PIN and try again","ERROR",JOptionPane.ERROR_MESSAGE);
+        }
+        else
+        {
+            try 
+            {
+                openFile();
+                hist=ImageIO.read(file);
+                recognizeFaces(hist);
+            } 
+            catch (IOException ex) 
+            {
+                Logger.getLogger(FrameRecognizer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_btnFileimageActionPerformed
+
+    private void btnGotologinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGotologinActionPerformed
+        FrameLogin obj=new FrameLogin();
+        obj.show();
+        this.dispose();
+    }//GEN-LAST:event_btnGotologinActionPerformed
 
     /**
      * @param args the command line arguments
@@ -289,11 +392,12 @@ public class FrameRecognizer extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnFileimage;
+    private javax.swing.JButton btnGotologin;
     private javax.swing.JButton btnVerify;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JToolBar jToolBar1;
-    private javax.swing.JTextField txtAccountNum;
+    private javax.swing.JTextField txtPIN;
     // End of variables declaration//GEN-END:variables
 }

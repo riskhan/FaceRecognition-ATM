@@ -19,6 +19,7 @@ import org.neuroph.core.data.DataSet;
 import org.neuroph.core.data.DataSetRow;
 import org.neuroph.core.data.norm.MaxMinNormalizer;
 import org.neuroph.core.data.norm.Normalizer;
+import org.neuroph.core.exceptions.VectorSizeMismatchException;
 import org.neuroph.nnet.MultiLayerPerceptron;
 import org.neuroph.nnet.learning.MomentumBackpropagation;
 import org.neuroph.util.TransferFunctionType;
@@ -33,7 +34,7 @@ import org.neuroph.util.TransferFunctionType;
  */
 public class NeuralNet {
     
-     //Logger logger = Logger.getLogger(NeuralNet.class.getName());
+     static Logger logger = Logger.getLogger(NeuralNet.class.getName());
      File dir = new File(".\\trainingset");
   
      final String[] extensions = new String[]{//the file extensions
@@ -84,15 +85,14 @@ public class NeuralNet {
                     trainingSet.addRow(new DataSetRow(input,output));
                     System.out.println((output.length));
                 }
-                catch(IOException e)
+                catch(Exception e)
                 {
-                    //logger.log(Level.SEVERE,"Cannot create the dataset");//remove all the static
+                    logger.log(Level.SEVERE,"Cannot create the dataset");//remove all the static
                 }
             }
         }
         trainingSet.normalize();
         trainingSet.saveAsTxt("trainingdataSet.txt",",");
-        
     }
     
     
@@ -111,6 +111,7 @@ public class NeuralNet {
         }
         else
         {
+            //logger.log(Level.SEVERE,"Cannot create the dataset");//remove all the static
             JOptionPane.showMessageDialog(null,"No dataset found","ERROR",
                     JOptionPane.ERROR_MESSAGE);
         }
@@ -120,36 +121,45 @@ public class NeuralNet {
         MomentumBackpropagation backProp = new MomentumBackpropagation() ;
         backProp.setLearningRate(lrate);
         backProp.setMomentum(momentum);
-        backProp.setMaxError(0.001);
-        backProp.setMaxIterations(10000);
+        backProp.setMaxError(0.01);
+        //backProp.setMaxIterations(10000);
         
         
         neuralNet.setLearningRule(backProp);
         neuralNet.learn(trainingSet);
+        neuralNet.save(".\\faceRec.nnet");
     }
     
     /**
      * Method to recognize input faces
      * @param testImage the features of the image to be recognized
-     * @returns the highest output of the neural network
+     * @return the highest values from the recognition 
      */
     public int recognizeFaces(double[] testImage)
     {
-        NeuralNetwork neural=NeuralNetwork.load(".\\faceRec.nnet");
-        neural.setInput(testImage);
-        neural.calculate();
-        double[] output=neural.getOutput();//get the output of the neural network
-        
-        //method to get the highest id from the output 
-        int high=0,id;
-        for(int i=1;i<output.length;i++)
+        int high=0,id = 0;
+        try
         {
-            if(output[i]>=output[high])
+            
+            NeuralNetwork neural=NeuralNetwork.load(".\\faceRec.nnet");
+            neural.setInput(testImage);
+            neural.calculate();
+            double[] output=neural.getOutput();//get the output of the neural network
+        
+            //method to get the highest id from the output 
+            for(int i=1;i<output.length;i++)
             {
-                high=i;
-            }     
+                if(output[i]>=output[high])
+                {
+                    high=i;
+                }   
+            }
+            id=high+1;
         }
-        id=high+1;
+        catch(VectorSizeMismatchException e)
+        {
+            //logger.log(Level.SEVERE, "Error training the dataset  {0}", e);//remove all the static
+        }
         return id;
     }
 

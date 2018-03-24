@@ -38,7 +38,7 @@ public class CustomersDB {
         try
         {
             String SQL="INSERT INTO accountdetails VALUES((SELECT MAX(id) FROM customerdetails),"+obj.getAccount()+",1234,"+obj.getDate()+""
-                    + ",00,00)";
+                    + ",1000,500)";
             DBConnection mycon=new DBConnection();
             row=mycon.addValues(SQL);
         }
@@ -70,7 +70,7 @@ public class CustomersDB {
         ResultSet rs=null;
         try
         {
-            String SQL="select*from accountDetails where ID="+obj.getID()+"";
+            String SQL="select*from accountDetails where ID="+obj.getID()+" and PIN="+obj.getPin()+"";
             DBConnection mycon=new DBConnection();
             rs=mycon.getValues(SQL);
         }

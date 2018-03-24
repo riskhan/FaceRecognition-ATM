@@ -13,14 +13,18 @@ import BLL.PreProcess;
 import DBL.Customers;
 import DBL.CustomersDB;
 import java.awt.Graphics;
+import java.awt.HeadlessException;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -37,6 +41,8 @@ import org.bytedeco.javacv.VideoInputFrameGrabber;
  */
 public class FrameRecognizer extends javax.swing.JFrame {
 
+    private static final Logger logger = Logger.getLogger(FrameRecognizer.class.getName());
+    FileHandler fh;
     FrameGrabber grabber;
     IplImage ipimg;
     OpenCVFrameConverter.ToIplImage converter=new OpenCVFrameConverter.ToIplImage();
@@ -81,9 +87,20 @@ public class FrameRecognizer extends javax.swing.JFrame {
     /**
      * Creates new form videoFrame
      */
-    public FrameRecognizer() {
+    public FrameRecognizer(){
         initComponents();
         capture();
+        try
+        {
+            fh = new FileHandler(".\\Logger.log", true);
+            logger.addHandler(fh);
+            SimpleFormatter formatter = new SimpleFormatter();  
+            fh.setFormatter(formatter); 
+        }
+        catch(IOException e)
+        {
+            logger.log(Level.SEVERE, e.getMessage(), e);
+        }
     }
     
     private void capture()
@@ -109,7 +126,7 @@ public class FrameRecognizer extends javax.swing.JFrame {
             }
             catch(Exception e)
             {
-                //Logger.getLogger(GaborFilterImageFrame.class.getName()).log(Level.SEVERE, null, e);
+                logger.log(Level.WARNING, "Error in reading file {0}", e);
             }
         }
     }
@@ -146,14 +163,15 @@ public class FrameRecognizer extends javax.swing.JFrame {
                 address=rs2.getString(3);
                 mobile=rs2.getInt(4);
             }
+            FrameAuthenticate auth=new FrameAuthenticate(name, address, mobile, acc,bal, with);
+            auth.show();
+            this.dispose();
         }
         catch(SQLException e)
         {
             JOptionPane.showMessageDialog(null,"cannot retrive values","ERROR",JOptionPane.ERROR_MESSAGE);
+            logger.log(Level.WARNING, "Cannot retrive values {0}", e);
         }
-        FrameAuthenticate auth=new FrameAuthenticate(name, address, mobile, acc,bal, with);
-        auth.show();
-        this.dispose();
     }
 
     /**
@@ -311,9 +329,9 @@ public class FrameRecognizer extends javax.swing.JFrame {
                 }
                 
             } 
-            catch (Exception e)
+            catch (HeadlessException e)
             {
-                
+                logger.log(Level.SEVERE, e.getMessage(), e);
             }
         }
     }//GEN-LAST:event_btnVerifyActionPerformed
@@ -338,13 +356,13 @@ public class FrameRecognizer extends javax.swing.JFrame {
         {
             try 
             {
-                openFile();
+                //openFile();
                 hist=ImageIO.read(file);
                 recognizeFaces(hist);
             } 
-            catch (IOException ex) 
+            catch (IOException e) 
             {
-                Logger.getLogger(FrameRecognizer.class.getName()).log(Level.SEVERE, null, ex);
+                logger.log(Level.WARNING, "Error in reading image{0}", e);
             }
         }
     }//GEN-LAST:event_btnFileimageActionPerformed

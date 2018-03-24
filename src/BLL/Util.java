@@ -9,7 +9,6 @@ package BLL;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.sql.SQLException;
 import org.bytedeco.javacpp.opencv_core.IplImage;
 import org.bytedeco.javacv.Frame;
 import org.bytedeco.javacv.Java2DFrameConverter;
@@ -21,7 +20,7 @@ import org.bytedeco.javacv.OpenCVFrameConverter;
  */
 public class Util {
     
-    
+    //Handler fh = new FileHandler("%t/test.log", true);
     //method to convert from iplimage to buffered
     public BufferedImage ipltoBuffered(IplImage src)
     {
@@ -61,11 +60,5 @@ public class Util {
         g2d.drawImage(tmp, 0, 0, null);
         g2d.dispose();
         return resized;
-    }
-    
-    public void logger()//do the logging functions
-    {
-        
-    }
-    
+    }    
 }

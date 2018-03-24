@@ -9,8 +9,13 @@ package UIL;
 import BLL.NeuralNet;
 import DBL.CustomersDB;
 import java.awt.HeadlessException;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 import javax.swing.JOptionPane;
 
 /**
@@ -19,6 +24,8 @@ import javax.swing.JOptionPane;
  */
 public class FrameTraining extends javax.swing.JFrame {
 
+    private static final Logger logger = Logger.getLogger(FrameTraining.class.getName());
+    FileHandler fh;
     /**
      * Creates new form FrameTrainings
      */
@@ -27,6 +34,20 @@ public class FrameTraining extends javax.swing.JFrame {
         initComponents();
         output=0;
         output=newUserid();
+        try
+        {
+            fh = new FileHandler(".\\Logger.log", true);
+            logger.addHandler(fh);
+            SimpleFormatter formatter = new SimpleFormatter();  
+            fh.setFormatter(formatter); 
+        }
+        catch(IOException e)
+        {
+            logger.log(Level.SEVERE, e.getMessage(), e);
+        }
+        txtHidden.setText("15");
+        txtMomentum.setText("0.7");
+        txtlrate.setText("0.2");
     }
     
     private int newUserid()//gets user id for the new user
@@ -52,7 +73,7 @@ public class FrameTraining extends javax.swing.JFrame {
         }
         catch(SQLException e)
         {
-            //do logger
+            logger.log(Level.SEVERE, e.getMessage(), e);
         }
         return usid;
     }
@@ -95,6 +116,11 @@ public class FrameTraining extends javax.swing.JFrame {
         });
 
         btnTest.setText("Test NN");
+        btnTest.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTestActionPerformed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel1.setText("TRAINING");
@@ -178,8 +204,8 @@ public class FrameTraining extends javax.swing.JFrame {
         }
         catch(HeadlessException e)
         {
+            logger.log(Level.SEVERE, e.getMessage(), e);
             JOptionPane.showMessageDialog(null,"Could not create Training set","ERROR",JOptionPane.ERROR_MESSAGE);
-            //do logger
         }
     }//GEN-LAST:event_btnLoadActionPerformed
 
@@ -199,14 +225,28 @@ public class FrameTraining extends javax.swing.JFrame {
         }
         else
         {
-            int hidden=Integer.parseInt(txtHidden.getText());
-            double lrate=Double.parseDouble(txtlrate.getText());
-            double momentum=Double.parseDouble(txtMomentum.getText());
-            jLabel5.setText("Training.....");
-            NeuralNet nnet=new NeuralNet();
-            NeuralNet.trainNetwork(output,hidden ,lrate,momentum);//look into this and make non static
+            try
+            {
+                int hidden=Integer.parseInt(txtHidden.getText());
+                double lrate=Double.parseDouble(txtlrate.getText());
+                double momentum=Double.parseDouble(txtMomentum.getText());
+                jLabel5.setText("Training.....");
+                NeuralNet nnet=new NeuralNet();
+                NeuralNet.trainNetwork(output,hidden ,lrate,momentum);//look into this and make non static
+            }
+            catch(Exception e)
+            {
+                logger.log(Level.SEVERE, e.getMessage(), e);
+                JOptionPane.showMessageDialog(null,"Error in training","ERROR",JOptionPane.ERROR_MESSAGE);
+            }
+
         }
     }//GEN-LAST:event_btnTrainActionPerformed
+
+    private void btnTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTestActionPerformed
+        
+        
+    }//GEN-LAST:event_btnTestActionPerformed
 
     /**
      * @param args the command line arguments

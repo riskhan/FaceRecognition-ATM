@@ -9,7 +9,13 @@ package UIL;
 import DBL.AdminDB;
 import DBL.Admin;
 import java.awt.Color;
+import java.io.IOException;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 import javax.swing.JOptionPane;
 
 
@@ -19,11 +25,24 @@ import javax.swing.JOptionPane;
  */
 public class FrameLogin extends javax.swing.JFrame {
 
+    private static final Logger logger = Logger.getLogger(FrameRecognizer.class.getName());
+    FileHandler fh;
     /**
      * Creates new form frameLogin
      */
     public FrameLogin() {
         initComponents();
+         try
+        {
+            fh = new FileHandler(".\\Logger.log", true);
+            logger.addHandler(fh);
+            SimpleFormatter formatter = new SimpleFormatter();  
+            fh.setFormatter(formatter); 
+        }
+        catch(IOException e)
+        {
+            logger.log(Level.SEVERE, e.getMessage(), e);
+        }
     }
 
     /**
@@ -137,8 +156,9 @@ public class FrameLogin extends javax.swing.JFrame {
                     row=1;
                 }
             }
-            catch(Exception e)
+            catch(SQLException e)
             {
+                logger.log(Level.SEVERE, e.getMessage(), e);
                JOptionPane.showMessageDialog(rootPane,"Error connecting to database","ERROR",JOptionPane.ERROR_MESSAGE);
             }    
             if(row==1)

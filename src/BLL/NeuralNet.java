@@ -10,6 +10,8 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -34,7 +36,6 @@ import org.neuroph.util.TransferFunctionType;
  */
 public class NeuralNet {
     
-     static Logger logger = Logger.getLogger(NeuralNet.class.getName());
      File dir = new File(".\\trainingset");
   
      final String[] extensions = new String[]{//the file extensions
@@ -53,6 +54,10 @@ public class NeuralNet {
             return (false);
         }
     };
+    public void logger()
+    {
+        
+    }
     
     /**
      * This method creates the training set
@@ -87,7 +92,7 @@ public class NeuralNet {
                 }
                 catch(Exception e)
                 {
-                    logger.log(Level.SEVERE,"Cannot create the dataset");//remove all the static
+                    
                 }
             }
         }

@@ -17,11 +17,16 @@ import java.awt.image.BufferedImage;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -39,6 +44,8 @@ import org.bytedeco.javacv.VideoInputFrameGrabber;
  */
 public class FrameNewcustomer extends javax.swing.JFrame {
 
+     private static final Logger logger = Logger.getLogger(FrameNewcustomer.class.getName());
+     FileHandler fh;
     //definitions for image capture
     FrameGrabber grabber;
     IplImage ipimg;
@@ -95,6 +102,17 @@ public class FrameNewcustomer extends javax.swing.JFrame {
         txtAccountNumber.setEditable(false);
         uid=newUserid();
         generateAccount();
+         try
+        {
+            fh = new FileHandler(".\\Logger.log", true);
+            logger.addHandler(fh);
+            SimpleFormatter formatter = new SimpleFormatter();  
+            fh.setFormatter(formatter); 
+        }
+        catch(IOException e)
+        {
+            logger.log(Level.SEVERE, e.getMessage(), e);
+        }
     }
     private void openWebcam()//method to show the webcam from the runnable class
     {
@@ -130,7 +148,7 @@ public class FrameNewcustomer extends javax.swing.JFrame {
         }
         catch(SQLException e)
         {
-            //do logger
+            logger.log(Level.SEVERE, e.getMessage(), e);
         }
         return usid;
     }
@@ -144,9 +162,9 @@ public class FrameNewcustomer extends javax.swing.JFrame {
             pw.print(text);
             pw.close();
         }
-        catch(Exception e)
+        catch(IOException e)
         {
-            //do logger
+           logger.log(Level.SEVERE, e.getMessage(), e);
         }
     }
     
@@ -374,8 +392,9 @@ public class FrameNewcustomer extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(rootPane,"Try again please","ERROR",JOptionPane.ERROR_MESSAGE);
             }
         }
-        catch (Exception e) 
+        catch (HeadlessException e) 
         {
+            logger.log(Level.SEVERE, e.getMessage(), e);
             JOptionPane.showMessageDialog(rootPane,"Error capturing "+e,"ERROR",JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnCaptureActionPerformed
@@ -430,6 +449,7 @@ public class FrameNewcustomer extends javax.swing.JFrame {
             }
             catch(NumberFormatException | HeadlessException e)
             {
+                logger.log(Level.SEVERE, e.getMessage(), e);
                 JOptionPane.showMessageDialog(rootPane,"Could not create user"+e,"ERROR",JOptionPane.ERROR_MESSAGE);
             }
         }
@@ -455,8 +475,9 @@ public class FrameNewcustomer extends javax.swing.JFrame {
             else
                 JOptionPane.showMessageDialog(rootPane,"You have added the images","Added",JOptionPane.ERROR_MESSAGE);
         }
-        catch (Exception e)
+        catch (IOException | HeadlessException e)
         {
+            logger.log(Level.SEVERE, e.getMessage(), e);
             JOptionPane.showMessageDialog(rootPane,"Could not add "+e,"ERROR",JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnAddActionPerformed

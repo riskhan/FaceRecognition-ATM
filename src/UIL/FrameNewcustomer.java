@@ -377,14 +377,12 @@ public class FrameNewcustomer extends javax.swing.JFrame {
         {
             captured=bImg;
             result=fobj.detectFace(captured);
-            histImg=pobj.histogramEqualization(result);
-            if(histImg!=null)
+            if(result!=null)
             {
+                histImg=pobj.histogramEqualization(result);
                 labelCaptured.setIcon(new ImageIcon(result));
                 labelCapturedHist.setIcon(new ImageIcon(histImg));
                 btnAdd.setEnabled(true);
-            //File out=new File("F:\\trial\\preProcess\\123Cature.jpg");
-            //ImageIO.write(hist,"jpg", out);
             }
             else
             {

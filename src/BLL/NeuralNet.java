@@ -5,22 +5,23 @@
  */
 
 package BLL;
+import java.awt.HeadlessException;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.logging.FileHandler;
-import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import org.neuroph.core.*;
 import org.neuroph.core.data.DataSet;
 import org.neuroph.core.data.DataSetRow;
 import org.neuroph.core.data.norm.MaxMinNormalizer;
-import org.neuroph.core.data.norm.Normalizer;
+import org.neuroph.core.data.norm.RangeNormalizer;
 import org.neuroph.core.exceptions.VectorSizeMismatchException;
 import org.neuroph.nnet.MultiLayerPerceptron;
 import org.neuroph.nnet.learning.MomentumBackpropagation;
@@ -36,6 +37,8 @@ import org.neuroph.util.TransferFunctionType;
  */
 public class NeuralNet {
     
+    private static final Logger logger = Logger.getLogger(NeuralNet.class.getName());
+    FileHandler fh;
      File dir = new File(".\\trainingset");
   
      final String[] extensions = new String[]{//the file extensions
@@ -54,11 +57,6 @@ public class NeuralNet {
             return (false);
         }
     };
-    public void logger()
-    {
-        
-    }
-    
     /**
      * This method creates the training set
      * @param outputSize the size of the output(the number of customers)
@@ -90,49 +88,56 @@ public class NeuralNet {
                     trainingSet.addRow(new DataSetRow(input,output));
                     System.out.println((output.length));
                 }
-                catch(Exception e)
+                catch(IOException | NumberFormatException | VectorSizeMismatchException e)
                 {
-                    
+                    logger(e);
                 }
             }
         }
-        trainingSet.normalize();
+        trainingSet.normalize(new RangeNormalizer(0.0,1.0));
         trainingSet.saveAsTxt("trainingdataSet.txt",",");
     }
     
     
-    public static void trainNetwork(int outputSize,int hidden,double lrate,double momentum)
+    public static String trainNetwork(int outputSize,int hidden,double lrate,double momentum)
     {
-        File trainingFile=new File(".\\trainingdataSet.txt");
-        DataSet trainingSet = null;
-        if(trainingFile.exists())
+        String error="";
+        try
         {
-            trainingSet=DataSet.load(".\\trainingdataSet.txt");
-            if(trainingSet.getOutputSize()!=outputSize)
+            File trainingFile=new File(".\\trainingdataSet.txt");
+            DataSet trainingSet = null;
+            if(trainingFile.exists())
             {
-                JOptionPane.showMessageDialog(null,"Output sizes dont match create/load dataset first","ERROR",
+                trainingSet=DataSet.load(".\\trainingdataSet.txt");
+                if(trainingSet.getOutputSize()!=outputSize)
+                {
+                    JOptionPane.showMessageDialog(null,"Output sizes dont match create/load dataset first","ERROR",
                         JOptionPane.ERROR_MESSAGE);
+                }
             }
-        }
-        else
-        {
-            //logger.log(Level.SEVERE,"Cannot create the dataset");//remove all the static
-            JOptionPane.showMessageDialog(null,"No dataset found","ERROR",
+            else
+            {
+                JOptionPane.showMessageDialog(null,"No dataset found","ERROR",
                     JOptionPane.ERROR_MESSAGE);
+            }
+            //int outputSize=0;
+            //outputSize=training.getOutputSize();
+            MultiLayerPerceptron neuralNet = new MultiLayerPerceptron(TransferFunctionType.SIGMOID,81,hidden ,outputSize);
+            MomentumBackpropagation backProp = new MomentumBackpropagation() ;
+            backProp.setLearningRate(lrate);
+            backProp.setMomentum(momentum);
+            backProp.setMaxError(0.01);
+            //backProp.setMaxIterations(10000);
+            neuralNet.setLearningRule(backProp);
+            neuralNet.learn(trainingSet);
+            neuralNet.save(".\\faceRec.nnet");
+            error=String.valueOf(neuralNet.getLearningRule().getPreviousEpochError());
         }
-        //int outputSize=0;
-        //outputSize=training.getOutputSize();
-        MultiLayerPerceptron neuralNet = new MultiLayerPerceptron(TransferFunctionType.SIGMOID,81,hidden ,outputSize);
-        MomentumBackpropagation backProp = new MomentumBackpropagation() ;
-        backProp.setLearningRate(lrate);
-        backProp.setMomentum(momentum);
-        backProp.setMaxError(0.01);
-        //backProp.setMaxIterations(10000);
-        
-        
-        neuralNet.setLearningRule(backProp);
-        neuralNet.learn(trainingSet);
-        neuralNet.save(".\\faceRec.nnet");
+        catch(HeadlessException e)
+        {
+            //*make this non static*/logger(e);
+        }
+        return error;
     }
     
     /**
@@ -163,9 +168,22 @@ public class NeuralNet {
         }
         catch(VectorSizeMismatchException e)
         {
-            //logger.log(Level.SEVERE, "Error training the dataset  {0}", e);//remove all the static
+            logger(e);
         }
         return id;
+    }
+    
+    private void logger(Exception e)
+    {
+        try {
+            fh = new FileHandler(".\\BLLLogger.log", true);
+            logger.addHandler(fh);
+            SimpleFormatter formatter = new SimpleFormatter(); 
+            fh.setFormatter(formatter);
+            logger.log(Level.SEVERE, e.getMessage(), e);
+        } catch (IOException | SecurityException ex) {
+            Logger.getLogger(FaceDetector.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public static void main(String args[])

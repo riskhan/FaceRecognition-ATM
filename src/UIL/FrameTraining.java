@@ -227,14 +227,16 @@ public class FrameTraining extends javax.swing.JFrame {
         {
             try
             {
+                String error="";
                 int hidden=Integer.parseInt(txtHidden.getText());
                 double lrate=Double.parseDouble(txtlrate.getText());
                 double momentum=Double.parseDouble(txtMomentum.getText());
                 jLabel5.setText("Training.....");
                 NeuralNet nnet=new NeuralNet();
-                NeuralNet.trainNetwork(output,hidden ,lrate,momentum);//look into this and make non static
+                error=NeuralNet.trainNetwork(output,hidden ,lrate,momentum);//look into this and make non static
+                jLabel5.setText("Error rate : "+error);
             }
-            catch(Exception e)
+            catch(NumberFormatException e)
             {
                 logger.log(Level.SEVERE, e.getMessage(), e);
                 JOptionPane.showMessageDialog(null,"Error in training","ERROR",JOptionPane.ERROR_MESSAGE);

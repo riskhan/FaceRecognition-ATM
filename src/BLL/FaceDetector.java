@@ -6,7 +6,13 @@
 
 package BLL;
 
+import UIL.FrameRecognizer;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 import static org.bytedeco.javacpp.helper.opencv_objdetect.cvHaarDetectObjects;
 import org.bytedeco.javacpp.opencv_core;
 import org.bytedeco.javacpp.opencv_core.CvMemStorage;
@@ -34,7 +40,8 @@ import org.bytedeco.javacpp.opencv_objdetect.CvHaarClassifierCascade;
  */
 public class FaceDetector {
     
-    
+    private static final Logger logger = Logger.getLogger(FaceDetector.class.getName());
+    FileHandler fh;
     private String CASCADE_FILE;
     private CvHaarClassifierCascade classifier = null;
     private CvSeq faces = null;
@@ -49,7 +56,8 @@ public class FaceDetector {
         PreProcess obj=new PreProcess();
         Util uobj=new Util();
 
-        CASCADE_FILE = "F:\\BSC\\Final_Project\\Face_Recognition\\haarcascade_frontalface_alt.xml";//the cascade file
+        try{
+        CASCADE_FILE = ".\\haarcascade_frontalface_alt.xml";//the cascade file
         classifier = CvHaarClassifierCascade.load(CASCADE_FILE, opencv_core.AbstractCvSize.ZERO);//load file
         
         gray=obj.converttoGray(imgfile);//convert to gray
@@ -91,7 +99,24 @@ public class FaceDetector {
                  cvCopy(smallimage,cropped);
                  result=uobj.resizeImage(cropped, 100, 100);
             }
+        }}
+        catch(Exception e)
+        {
+            logger(e);
         }
         return result;
     }   
+    
+    private void logger(Exception e)
+    {
+        try {
+            fh = new FileHandler(".\\BLLLogger.log", true);
+            logger.addHandler(fh);
+            SimpleFormatter formatter = new SimpleFormatter(); 
+            fh.setFormatter(formatter);
+            logger.log(Level.SEVERE, e.getMessage(), e);
+        } catch (IOException | SecurityException ex) {
+            Logger.getLogger(FaceDetector.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

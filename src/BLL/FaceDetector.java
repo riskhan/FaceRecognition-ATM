@@ -6,7 +6,6 @@
 
 package BLL;
 
-import UIL.FrameRecognizer;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.logging.FileHandler;

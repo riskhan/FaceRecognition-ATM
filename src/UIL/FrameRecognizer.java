@@ -7,6 +7,7 @@
 package UIL;
 
 import BLL.FaceDetector;
+import BLL.GaborFeature;
 import BLL.NeuralNet;
 import BLL.Util;
 import BLL.PreProcess;
@@ -137,12 +138,13 @@ public class FrameRecognizer extends javax.swing.JFrame {
     private void recognizeFaces(BufferedImage newImage)//get the buffered image as parameter
     {
         NeuralNet nnet=new NeuralNet();
+        GaborFeature gf=new GaborFeature();
         ResultSet rs=null,rs2=null;
         Customers cobj=new Customers();
         double feature[]=new double[80];
         int id=1,pin=0;
-        //do the gabor filtering
-        //id=nnet.recognizeFaces(feature);//get the recognized id
+        feature=gf.getFeature(newImage);
+        id=nnet.recognizeFaces(feature,);//get the recognized id
         pin=Integer.parseInt(txtPIN.getText());
         cobj.setID(id);
         cobj.setPin(pin);

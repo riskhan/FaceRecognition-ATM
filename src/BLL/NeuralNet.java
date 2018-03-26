@@ -135,7 +135,7 @@ public class NeuralNet {
                     backProp.setLearningRate(lrate);
                     backProp.setMomentum(momentum);
                     backProp.setMaxError(0.01);
-                    backProp.setMaxIterations(10000);
+                    backProp.setMaxIterations(30000);
                     neuralNet.setLearningRule(backProp);
                     neuralNet.learn(trainingSet);
                     neuralNet.save(".\\faceRec.nnet");
@@ -158,19 +158,25 @@ public class NeuralNet {
     /**
      * Method to recognize input faces
      * @param testImage the features of the image to be recognized
+     * @param outputsize the output size the network
      * @return the highest values from the recognition 
      */
-    public int recognizeFaces(double[] testImage)
+    public int recognizeFaces(double[] testImage,int outputsize)
     {
+        DataSet newData=new DataSet(80);
+        double[] output=new double[outputsize];
+        newData.addRow(new DataSetRow(testImage));
+        newData.normalize(new DecimalScaleNormalizer());
         int high=0,id = 0;
         try
         {
-            
             NeuralNetwork neural=NeuralNetwork.load(".\\faceRec.nnet");
-            neural.setInput(testImage);
-            neural.calculate();
-            double[] output=neural.getOutput();//get the output of the neural network
-        
+            for(DataSetRow recRow : newData.getRows()) 
+            {
+                neural.setInput(recRow.getInput());
+                neural.calculate();
+                output=neural.getOutput();//get the output of the neural network
+            }
             //method to get the highest id from the output 
             for(int i=1;i<output.length;i++)
             {
@@ -203,7 +209,7 @@ public class NeuralNet {
 
     public static void main(String args[])
     {
-        String x[]=trainNetwork(2,10,0.3,0.1);
+        String x[]=trainNetwork(2,10,0.2,0.7);
         System.out.println("Error : "+x[0]);
         System.out.println("TotalE : "+x[1]);
     }

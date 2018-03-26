@@ -16,7 +16,7 @@ import java.awt.image.Raster;
    
    
    
-public class GaborLire  {   
+public class GaborFeature  {   
    
     private static final double U_H = .4;   
     private static final double U_L = .05;   
@@ -46,7 +46,7 @@ public class GaborLire  {
             sigma_y[i] = 1 / (2 * Math.PI * Math.tan(Math.PI / (2 * N)) * Math.sqrt(Math.pow(U_H, 2) / (2 * LOG2) - Math.pow(1 / (2 * Math.PI * sigma_x[i]), 2)));   
    
         }   
-        GaborLire gaborFeature = new GaborLire();   
+        GaborFeature gaborFeature = new GaborFeature();   
         double[] selfSimilarGaborWavelet;   
         for (int s = 0; s < S; s++) {   
             for (int t = 0; t < T; t++) {   

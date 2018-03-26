@@ -133,6 +133,7 @@ public class FrameTraining extends javax.swing.JFrame {
 
         jLabel4.setText("Momentum");
 
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         jLabel5.setText("Neural network");
 
         jToolBar1.setRollover(true);
@@ -250,14 +251,14 @@ public class FrameTraining extends javax.swing.JFrame {
         {
             try
             {
-                String error="";
+                String error[]=new String[2];
                 int hidden=Integer.parseInt(txtHidden.getText());
                 double lrate=Double.parseDouble(txtlrate.getText());
                 double momentum=Double.parseDouble(txtMomentum.getText());
                 jLabel5.setText("Training.....");
                 NeuralNet nnet=new NeuralNet();
                 error=NeuralNet.trainNetwork(output,hidden ,lrate,momentum);//look into this and make non static
-                jLabel5.setText("Error rate : "+error);
+                jLabel5.setText("Error rate : "+error[0]+"   Iterations : "+error[1]);
             }
             catch(NumberFormatException e)
             {

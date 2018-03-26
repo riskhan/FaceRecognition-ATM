@@ -20,7 +20,9 @@ import javax.swing.JOptionPane;
 import org.neuroph.core.*;
 import org.neuroph.core.data.DataSet;
 import org.neuroph.core.data.DataSetRow;
+import org.neuroph.core.data.norm.DecimalScaleNormalizer;
 import org.neuroph.core.data.norm.MaxMinNormalizer;
+import org.neuroph.core.data.norm.MaxNormalizer;
 import org.neuroph.core.data.norm.RangeNormalizer;
 import org.neuroph.core.exceptions.VectorSizeMismatchException;
 import org.neuroph.nnet.MultiLayerPerceptron;
@@ -39,13 +41,13 @@ public class NeuralNet {
     
     private static final Logger logger = Logger.getLogger(NeuralNet.class.getName());
     FileHandler fh;
-     File dir = new File(".\\trainingset");
+    static File dir = new File(".\\trainingset");
   
-     final String[] extensions = new String[]{//the file extensions
+     static final String[] extensions = new String[]{//the file extensions
         "gif", "png", "bmp","jpg"
     };
     
-    final FilenameFilter imgFilter = new FilenameFilter() {//to filter the directory with images
+    static final FilenameFilter imgFilter = new FilenameFilter() {//to filter the directory with images
 
         @Override
         public boolean accept(final File dir, final String name) {
@@ -57,16 +59,20 @@ public class NeuralNet {
             return (false);
         }
     };
+    static DataSet testTra=new DataSet(80,2);
     /**
      * This method creates the training set
      * @param outputSize the size of the output(the number of customers)
      */
     public void createTrainingset(int outputSize)
     {
+        GaborLire gl=new GaborLire();
         String imgName,imgId;
         int id,x;
         DataSet trainingSet=new DataSet(80, outputSize);//initialize the dataset
         BufferedImage img=null;
+        try
+        {
         if(dir.isDirectory())
         {
             for(final File f: dir.listFiles(imgFilter))
@@ -83,8 +89,8 @@ public class NeuralNet {
                     output[id-1]=1;
                     
                     double []input=new double[80];
+                    input=gl.getFeature(img);
                     /*do the gabor filtering and extract the features and put to dataset*/
-
                     trainingSet.addRow(new DataSetRow(input,output));
                     System.out.println((output.length));
                 }
@@ -94,17 +100,24 @@ public class NeuralNet {
                 }
             }
         }
-        trainingSet.normalize(new RangeNormalizer(0.0,1.0));
-        trainingSet.saveAsTxt("trainingdataSet.txt",",");
+                trainingSet.normalize(new DecimalScaleNormalizer());
+                trainingSet.saveAsTxt("trainingdataSet.txt",",");
+                testTra=trainingSet;
+        }
+        catch(Exception ex)
+        {
+            logger(ex);
+        }
     }
     
     
     public static String trainNetwork(int outputSize,int hidden,double lrate,double momentum)
     {
         String error="";
+        createTrainingset2(2);
         try
         {
-            File trainingFile=new File(".\\trainingdataSet.txt");
+           /* File trainingFile=new File(".\\trainingdataSet.txt");
             DataSet trainingSet = null;
             if(trainingFile.exists())
             {
@@ -119,17 +132,17 @@ public class NeuralNet {
             {
                 JOptionPane.showMessageDialog(null,"No dataset found","ERROR",
                     JOptionPane.ERROR_MESSAGE);
-            }
+            }*/
             //int outputSize=0;
             //outputSize=training.getOutputSize();
-            MultiLayerPerceptron neuralNet = new MultiLayerPerceptron(TransferFunctionType.SIGMOID,81,hidden ,outputSize);
+            MultiLayerPerceptron neuralNet = new MultiLayerPerceptron(TransferFunctionType.SIGMOID,80,hidden ,outputSize);
             MomentumBackpropagation backProp = new MomentumBackpropagation() ;
             backProp.setLearningRate(lrate);
             backProp.setMomentum(momentum);
             backProp.setMaxError(0.01);
             //backProp.setMaxIterations(10000);
             neuralNet.setLearningRule(backProp);
-            neuralNet.learn(trainingSet);
+            neuralNet.learn(testTra);
             neuralNet.save(".\\faceRec.nnet");
             error=String.valueOf(neuralNet.getLearningRule().getPreviousEpochError());
         }
@@ -188,6 +201,53 @@ public class NeuralNet {
 
     public static void main(String args[])
     {
-        trainNetwork(3,3,0.2,0.7);
+        trainNetwork(2,15,0.2,0.7);
+    }
+    
+    
+        public static void createTrainingset2(int outputSize)
+    {
+        GaborLire gl=new GaborLire();
+        String imgName,imgId;
+        int id,x;
+        DataSet trainingSet=new DataSet(80, outputSize);//initialize the dataset
+        BufferedImage img=null;
+        try
+        {
+        if(dir.isDirectory())
+        {
+            for(final File f: dir.listFiles(imgFilter))
+            {
+                try
+                {
+                    img = ImageIO.read(f);
+                    imgName = f.getName();//name of the image
+                    imgId = imgName.substring(0, 1);//id of the image by getting the first letter of the image
+                    id = Integer.parseInt(imgId);
+                    
+                    double[]output=new double[outputSize];
+                    Arrays.fill(output,0);
+                    output[id-1]=1;
+                    
+                    double []input=new double[80];
+                    input=gl.getFeature(img);
+                    /*do the gabor filtering and extract the features and put to dataset*/
+                    trainingSet.addRow(new DataSetRow(input,output));
+                    System.out.println((output.length));
+                }
+                catch(IOException | NumberFormatException | VectorSizeMismatchException e)
+                {
+                    //logger(e);
+                }
+            }
+        }
+                trainingSet.normalize(new DecimalScaleNormalizer());
+                trainingSet.saveAsTxt("trainingdataSet.txt",",");
+                testTra=trainingSet;
+        }
+        catch(Exception ex)
+        {
+            //logger(ex);
+        }
     }
 }

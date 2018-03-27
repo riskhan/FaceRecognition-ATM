@@ -9,9 +9,12 @@ package DBL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Vector;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -64,6 +67,43 @@ public class DBConnection {
            e.printStackTrace();
         }
         return rs;
+    }
+    
+    
+    public DefaultTableModel getTables(String SQL)//to view the  table
+    {
+        DefaultTableModel objtable=new DefaultTableModel();
+        try
+        {
+            Connection con=createConnection();
+            Statement stat=con.createStatement();
+            ResultSet rs=stat.executeQuery(SQL);
+            ResultSetMetaData rsmeta=rs.getMetaData();
+            int columns=rsmeta.getColumnCount();
+            
+            Vector Columnname=new Vector();
+            for(int i=1;i<=columns;i++)
+            {
+                Columnname.addElement(rsmeta.getColumnName(i));
+            }
+            
+            objtable.setColumnIdentifiers(Columnname);
+            Vector DataRows=new Vector();
+            while(rs.next())
+            {
+                DataRows=new Vector();
+                for(int r=1;r<=columns;r++)
+                {
+                    DataRows.addElement(rs.getString(r));
+                }
+                objtable.addRow(DataRows);
+            }
+        }
+        catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(null,"Error connecting to database"+e);
+        }
+        return objtable;
     }
     
 }

@@ -7,6 +7,8 @@
 package DBL;
 
 import java.sql.ResultSet;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 
 /**
@@ -112,6 +114,38 @@ public class CustomersDB {
             e.printStackTrace();
         }
         return rs;
+    }
+    
+    public DefaultTableModel customerTable()
+    {
+        DefaultTableModel objtable=new DefaultTableModel();
+        try
+        {
+            String SQL="select*from customerdetails";
+            DBConnection mycon=new DBConnection();
+            objtable=mycon.getTables(SQL);
+        }
+        catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(null,"Error connecting database  "+e);
+        }
+        return objtable;
+    }
+    
+    public DefaultTableModel accountsTable()
+    {
+        DefaultTableModel objtable=new DefaultTableModel();
+        try
+        {
+            String SQL="select*from accountDetails";
+            DBConnection mycon=new DBConnection();
+            objtable=mycon.getTables(SQL);
+        }
+        catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(null,"Error connecting database  "+e);
+        }
+        return objtable;
     }
     
     

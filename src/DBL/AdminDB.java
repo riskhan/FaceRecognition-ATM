@@ -7,6 +7,8 @@
 package DBL;
 
 import java.sql.ResultSet;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -44,6 +46,39 @@ public class AdminDB {
             e.printStackTrace();
         }
         return row;
+    }
+    
+    public DefaultTableModel adminTable()/*method to view the book table*/
+    {
+        DefaultTableModel objtable=new DefaultTableModel();
+        try
+        {
+            String SQL="select*from loginDetails";
+            DBConnection mycon=new DBConnection();
+            objtable=mycon.getTables(SQL);
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return objtable;
+    }
+    
+    
+    public ResultSet getAlldetails()
+    {
+        ResultSet rs=null;
+        try
+        {
+            String SQL="select*from loginDetails";
+            DBConnection mycon=new DBConnection();
+            rs=mycon.getValues(SQL);
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return rs;
     }
     
 }

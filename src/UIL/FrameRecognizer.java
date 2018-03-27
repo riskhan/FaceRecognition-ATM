@@ -79,9 +79,9 @@ public class FrameRecognizer extends javax.swing.JFrame {
                     }
                 }
             }
-            catch(Exception e)
+            catch(FrameGrabber.Exception | InterruptedException e)
             {
-                 e.printStackTrace();
+                logger.log(Level.WARNING,e.getMessage(),e);
             }
         }    
     }
@@ -144,12 +144,12 @@ public class FrameRecognizer extends javax.swing.JFrame {
         double feature[]=new double[80];
         int id=1,pin=0;
         feature=gf.getFeature(newImage);
-        id=nnet.recognizeFaces(feature,);//get the recognized id
-        pin=Integer.parseInt(txtPIN.getText());
-        cobj.setID(id);
-        cobj.setPin(pin);
         try
         {
+            id=nnet.recognizeFaces(feature,);//get the recognized id
+            pin=Integer.parseInt(txtPIN.getText());
+            cobj.setID(id);
+            cobj.setPin(pin);
             CustomersDB cdobj=new CustomersDB();
             rs=cdobj.getAccountdetails(cobj);
             rs2=cdobj.getDetails(cobj);
@@ -189,12 +189,13 @@ public class FrameRecognizer extends javax.swing.JFrame {
         btnVerify = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        txtPIN = new javax.swing.JTextField();
         jToolBar1 = new javax.swing.JToolBar();
         btnFileimage = new javax.swing.JButton();
         btnGotologin = new javax.swing.JButton();
+        txtPIN = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(204, 204, 255));
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel1.setPreferredSize(new java.awt.Dimension(320, 240));
@@ -210,6 +211,7 @@ public class FrameRecognizer extends javax.swing.JFrame {
             .addGap(0, 288, Short.MAX_VALUE)
         );
 
+        btnVerify.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnVerify.setText("VERIFY");
         btnVerify.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -222,14 +224,6 @@ public class FrameRecognizer extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         jLabel2.setText("RECOGNIZE YOURSELF");
-
-        txtPIN.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        txtPIN.setToolTipText("Enter your account number and verify");
-        txtPIN.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtPINKeyTyped(evt);
-            }
-        });
 
         jToolBar1.setRollover(true);
 
@@ -244,7 +238,7 @@ public class FrameRecognizer extends javax.swing.JFrame {
         });
         jToolBar1.add(btnFileimage);
 
-        btnGotologin.setText("login");
+        btnGotologin.setText("Admin");
         btnGotologin.setFocusable(false);
         btnGotologin.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnGotologin.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -255,39 +249,43 @@ public class FrameRecognizer extends javax.swing.JFrame {
         });
         jToolBar1.add(btnGotologin);
 
+        txtPIN.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(txtPIN, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(136, 136, 136))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(70, 70, 70)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(60, 60, 60)
+                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(244, 244, 244)
+                                .addComponent(btnVerify, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(126, 126, 126)
+                                .addComponent(txtPIN, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 60, Short.MAX_VALUE)))
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(208, 208, 208)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(244, 244, 244)
-                        .addComponent(btnVerify, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(234, 234, 234)
-                        .addComponent(jLabel2))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(278, 278, 278)
+                        .addGap(44, 44, 44)
                         .addComponent(jLabel1)))
-                .addContainerGap(70, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(37, Short.MAX_VALUE)
+                .addContainerGap(39, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
@@ -295,7 +293,7 @@ public class FrameRecognizer extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(txtPIN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(21, 21, 21)
                 .addComponent(btnVerify, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20)
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -337,16 +335,6 @@ public class FrameRecognizer extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_btnVerifyActionPerformed
-
-    private void txtPINKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPINKeyTyped
-
-        char enter = evt.getKeyChar();
-        if(!(Character.isDigit(enter) || enter==KeyEvent.VK_BACK_SPACE || enter==KeyEvent.VK_DELETE || enter==KeyEvent.VK_PERIOD))
-        {
-            JOptionPane.showMessageDialog(null,"enter number values only");
-            evt.consume();
-        }
-    }//GEN-LAST:event_txtPINKeyTyped
 
     private void btnFileimageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFileimageActionPerformed
 
@@ -418,6 +406,6 @@ public class FrameRecognizer extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JToolBar jToolBar1;
-    private javax.swing.JTextField txtPIN;
+    private javax.swing.JPasswordField txtPIN;
     // End of variables declaration//GEN-END:variables
 }

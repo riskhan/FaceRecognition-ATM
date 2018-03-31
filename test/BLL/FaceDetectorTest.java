@@ -7,6 +7,9 @@
 package BLL;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -43,15 +46,19 @@ public class FaceDetectorTest {
      * Test of detectFace method, of class FaceDetector.
      */
     @Test
-    public void testDetectFace() {
+    public void testDetectFace() throws IOException {
         System.out.println("detectFace");
-        BufferedImage imgfile = null;
+        File file = new File("F:\\AAAAHLight.jpg");
+        BufferedImage imgfile=ImageIO.read(file);
         FaceDetector instance = new FaceDetector();
-        BufferedImage expResult = null;
+        int expResult = 1;
+        int x=0;
         BufferedImage result = instance.detectFace(imgfile);
-        assertEquals(expResult, result);
+        if(result!=null)
+            x=1;
+        assertEquals(expResult, x);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
     
 }

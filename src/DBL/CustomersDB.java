@@ -89,7 +89,7 @@ public class CustomersDB {
         try
         {
             String SQL="update accountdetails set accBalance=accBalance-"+obj.getAccountBal()+""
-                    + ",lastWithdraw="+obj.getAccountBal()+"";
+                    + ",lastWithdraw="+obj.getAccountBal()+" where id="+obj.getID()+"";
             DBConnection mycon=new DBConnection();
             row=mycon.addValues(SQL);
         }

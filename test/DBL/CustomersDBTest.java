@@ -143,7 +143,7 @@ public class CustomersDBTest {
     public void testGetAlldetails() throws SQLException {
         System.out.println("getAlldetails");
         CustomersDB instance = new CustomersDB();
-        int expResult = 11,id=0;
+        int expResult = 24,id=0;
         ResultSet result = instance.getAlldetails();
         while(result.next())
         {

@@ -89,15 +89,15 @@ public class FrameAtm extends javax.swing.JFrame {
         btnWith = new javax.swing.JButton();
         labelName = new javax.swing.JLabel();
         btnViewdetails = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        btnExit = new javax.swing.JButton();
+        btnDeposit = new javax.swing.JButton();
 
         jLabel4.setText("jLabel4");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ATM-Withdraw");
 
-        jPanel1.setBackground(new java.awt.Color(0, 102, 102));
+        jPanel1.setBackground(new java.awt.Color(204, 204, 204));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel1.setText("WELCOME");
@@ -106,7 +106,7 @@ public class FrameAtm extends javax.swing.JFrame {
         jLabel2.setText("TOTAL BALANCE");
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 0));
+        jLabel3.setForeground(new java.awt.Color(0, 102, 102));
         jLabel3.setText("5000.0");
 
         txtAmount.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -136,19 +136,19 @@ public class FrameAtm extends javax.swing.JFrame {
             }
         });
 
-        jButton4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jButton4.setText("Exit");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        btnExit.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnExit.setText("Exit");
+        btnExit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                btnExitActionPerformed(evt);
             }
         });
 
-        jButton5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jButton5.setText("Deposit Cash");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        btnDeposit.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnDeposit.setText("Deposit Cash");
+        btnDeposit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                btnDepositActionPerformed(evt);
             }
         });
 
@@ -172,14 +172,14 @@ public class FrameAtm extends javax.swing.JFrame {
                         .addComponent(jLabel3))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(21, 21, 21)
-                        .addComponent(jButton5)
+                        .addComponent(btnDeposit)
                         .addGap(101, 101, 101)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(btnWith, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(txtAmount, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 120, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnViewdetails))
                 .addGap(22, 22, 22))
         );
@@ -198,11 +198,11 @@ public class FrameAtm extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnViewdetails, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnDeposit, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(27, 27, 27)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnWith, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(127, Short.MAX_VALUE))
         );
 
@@ -229,6 +229,10 @@ public class FrameAtm extends javax.swing.JFrame {
         else if(Float.parseFloat(txtAmount.getText())>val||Float.parseFloat(txtAmount.getText())==val)
         {
             JOptionPane.showMessageDialog(null,"Select amount less than balance","ERROR",JOptionPane.ERROR_MESSAGE);
+        }
+        else if(Float.parseFloat(txtAmount.getText())==0)
+        {
+            JOptionPane.showMessageDialog(null,"Invalid amount","ERROR",JOptionPane.ERROR_MESSAGE);
         }
         else
         {
@@ -270,17 +274,60 @@ public class FrameAtm extends javax.swing.JFrame {
 
     private void btnViewdetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewdetailsActionPerformed
         
+        generateBalance();
         FrameAuthenticate obj=new FrameAuthenticate(name,address, mobile, acc, bal, with);
         obj.show();
     }//GEN-LAST:event_btnViewdetailsActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+    private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
+        FrameRecognizer obj=new FrameRecognizer();
+        obj.show();
+        this.dispose();
+        /*FrameNewcustomer obj=new FrameNewcustomer();
+        obj.show();
+        this.dispose();*/
+        
+    }//GEN-LAST:event_btnExitActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton5ActionPerformed
+    private void btnDepositActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDepositActionPerformed
+
+        if(txtAmount.getText().isEmpty())
+        {
+            JOptionPane.showMessageDialog(null,"Enter amount","ERROR",JOptionPane.ERROR_MESSAGE);
+        }
+        else if(Float.parseFloat(txtAmount.getText())==0||Float.parseFloat(txtAmount.getText())<500||
+                Float.parseFloat(txtAmount.getText())>80000)
+        {
+            JOptionPane.showMessageDialog(null,"Invalid amount","ERROR",JOptionPane.ERROR_MESSAGE);
+        }
+        else
+        {
+            float txt=Float.parseFloat(txtAmount.getText());
+            CustomersDB obj=new CustomersDB();
+            Customers cobj=new Customers();
+            cobj.setAccountBal(txt);
+            cobj.setID(id);
+            int row=0;
+            try
+            {
+                row=obj.depositMoney(cobj);
+                if(row>0)
+                {
+                    generateBalance();
+                    JOptionPane.showMessageDialog(null,"Cash deposited","Success",JOptionPane.INFORMATION_MESSAGE);
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(null,"Try depositing again","ERROR",JOptionPane.ERROR_MESSAGE);
+                }
+            }
+            catch(HeadlessException e)
+            {
+                logger.log(Level.SEVERE, e.getMessage(), e);
+            }
+        }
+        
+    }//GEN-LAST:event_btnDepositActionPerformed
 
     private void generateBalance()
     {
@@ -371,10 +418,10 @@ public class FrameAtm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnDeposit;
+    private javax.swing.JButton btnExit;
     private javax.swing.JButton btnViewdetails;
     private javax.swing.JButton btnWith;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

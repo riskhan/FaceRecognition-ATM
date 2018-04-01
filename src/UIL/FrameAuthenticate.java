@@ -221,8 +221,6 @@ public class FrameAuthenticate extends javax.swing.JFrame {
 
     private void btnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOkActionPerformed
 
-        FrameRecognizer obj=new FrameRecognizer();
-        obj.show();
         this.dispose();
     }//GEN-LAST:event_btnOkActionPerformed
 

@@ -83,12 +83,11 @@ public class FrameNewcustomer extends javax.swing.JFrame {
                     }
                 }
             }
-            catch(Exception e)
+            catch(FrameGrabber.Exception | InterruptedException e)
             {
-                 e.printStackTrace();
+                logger.log(Level.WARNING,e.getMessage(),e);
             }
-        }
-        
+        }    
     }
     /**
      * Creates new form videoFrame
@@ -122,8 +121,7 @@ public class FrameNewcustomer extends javax.swing.JFrame {
         t.setDaemon(true);
         capt.runn=true;
         t.start();
-    }
-    
+    }   
     private int newUserid()//gets user id for the new user
     {
         ResultSet rs=null;
@@ -515,9 +513,9 @@ public class FrameNewcustomer extends javax.swing.JFrame {
              obj.show();
              grabber.stop();
              grabber.close();
-             this.dispose();
-         } catch (FrameGrabber.Exception ex) {
-             Logger.getLogger(FrameNewcustomer.class.getName()).log(Level.SEVERE, null, ex);
+             this.hide();
+         } catch (FrameGrabber.Exception e) {
+             logger.log(Level.SEVERE, e.getMessage(), e);
          }
     }//GEN-LAST:event_btnMainActionPerformed
 

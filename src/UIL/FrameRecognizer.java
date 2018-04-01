@@ -34,6 +34,7 @@ import org.bytedeco.javacpp.opencv_core.IplImage;
 import org.bytedeco.javacv.Frame;
 import org.bytedeco.javacv.FrameGrabber;
 import org.bytedeco.javacv.OpenCVFrameConverter;
+import org.bytedeco.javacv.OpenCVFrameGrabber;
 import org.bytedeco.javacv.VideoInputFrameGrabber;
 
 /**
@@ -59,7 +60,8 @@ public class FrameRecognizer extends javax.swing.JFrame {
         public void run() {
             try
             {
-                grabber=new VideoInputFrameGrabber(0);
+                //grabber=new VideoInputFrameGrabber(0);
+                grabber=new  OpenCVFrameGrabber(0);
                 grabber.start();
                 while(runn)
                 {
@@ -113,15 +115,7 @@ public class FrameRecognizer extends javax.swing.JFrame {
         capt.runn=true;
         t.start();
     }
-    
-     private void close()
-    {
-        captureImage capt=new captureImage();
-        Thread t=new Thread(capt);
-        t.setDaemon(false);
-        capt.runn=false;
-        t.start();
-    }
+
     private void openFile()//alternative to real time detection
     {
         final JFrame frame = new JFrame("Select image to be recognized");
@@ -416,9 +410,15 @@ public class FrameRecognizer extends javax.swing.JFrame {
     }//GEN-LAST:event_btnFileimageActionPerformed
 
     private void btnGotologinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGotologinActionPerformed
-        FrameLogin obj=new FrameLogin();
-        obj.show();
-        this.dispose();
+        try {
+                FrameLogin atmo=new FrameLogin();
+                atmo.show(); 
+                grabber.stop();
+                grabber.close();
+                this.hide();
+        } catch (FrameGrabber.Exception ex) {
+            Logger.getLogger(FrameRecognizer.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnGotologinActionPerformed
 
     private void txtPINKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPINKeyTyped

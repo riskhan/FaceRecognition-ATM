@@ -100,6 +100,22 @@ public class CustomersDB {
         return row;
     }
     
+    public int depositMoney(Customers obj)
+    {
+        int row=0;
+        try
+        {
+            String SQL="update accountdetails set accBalance=accBalance+"+obj.getAccountBal()+" where id="+obj.getID()+"";
+            DBConnection mycon=new DBConnection();
+            row=mycon.addValues(SQL);
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return row;
+    }
+    
     public ResultSet getAlldetails()
     {
         ResultSet rs=null;
@@ -146,6 +162,23 @@ public class CustomersDB {
             JOptionPane.showMessageDialog(null,"Error connecting database  "+e);
         }
         return objtable;
+    }
+    
+    public int updateCustomers(Customers obj)
+    {
+        int row=0;
+        try
+        {
+            String SQL="update customerdetails set CName='"+obj.getName()+"',CAdd='"+obj.getAddress()+"',"
+                    + "Mobile="+obj.getMobile()+" where ID="+obj.getID()+"";
+            DBConnection mycon=new DBConnection();
+            row=mycon.addValues(SQL);
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return row;
     }
     
     

@@ -94,9 +94,12 @@ public class NeuralNet {
                 catch(IOException | NumberFormatException | VectorSizeMismatchException e)
                 {
                     logger(e);
+                    JOptionPane.showMessageDialog(null, "Error creating training set check log file"
+                    , "ERROR",JOptionPane.ERROR_MESSAGE);
                 }
             }
         }
+                trainingSet.saveAsTxt("trainingSet.txt",",");
                 trainingSet.normalize(new DecimalScaleNormalizer());
                 trainingSet.saveAsTxt("trainingdataSet.txt",",");
                 testTra=trainingSet;
@@ -104,6 +107,8 @@ public class NeuralNet {
         catch(Exception ex)
         {
             logger(ex);
+            JOptionPane.showMessageDialog(null, "Error creating training set check log file"
+                    , "ERROR",JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -163,36 +168,47 @@ public class NeuralNet {
      */
     public int recognizeFaces(double[] testImage,int outputsize)
     {
-        DataSet newData=new DataSet(80);
+        DataSet newData=new DataSet(80, outputsize);
+        double[] nOutput=new double[outputsize];
         double[] output=new double[outputsize];
-        newData.addRow(new DataSetRow(testImage));
-        newData.normalize(new DecimalScaleNormalizer());
-        int high=0,id = 0;
+        double[] input=null;
+        Arrays.fill(output,0);
+        int high=0,id = 0,size=0;
         try
         {
+            newData=TrainingSetImport.importFromFile(".\\trainingSet.txt",80,outputsize,",");
+            newData.addRow(new DataSetRow(testImage,output));
+            newData.normalize(new DecimalScaleNormalizer());
+            size=newData.size();
+            DataSetRow inputRow=newData.getRowAt(size-1);
+            input=inputRow.getInput();
+            
             NeuralNetwork neural=NeuralNetwork.load(".\\faceRec.nnet");
-            for(DataSetRow recRow : newData.getRows()) 
-            {
-                neural.setInput(recRow.getInput());
-                neural.calculate();
-                output=neural.getOutput();//get the output of the neural network
-            }
+            neural.setInput(input);
+            neural.calculate();
+            nOutput=neural.getOutput();//get the output of the neural network
+            
             //method to get the highest id from the output 
-            for(int i=1;i<output.length;i++)
+            for(int i=1;i<nOutput.length;i++)
             {
-                if(output[i]>=output[high])
+                if(nOutput[i]>=nOutput[high])
                 {
                     high=i;
                 }   
             }
             id=high+1;
         }
+        
         catch(VectorSizeMismatchException e)
         {
             logger(e);
+        } catch (IOException | NumberFormatException ex) {
+            logger(ex);
         }
         return id;
     }
+    
+    
     
     private void logger(Exception e)
     {

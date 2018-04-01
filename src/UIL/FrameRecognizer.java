@@ -49,7 +49,7 @@ public class FrameRecognizer extends javax.swing.JFrame {
     OpenCVFrameConverter.ToIplImage converter=new OpenCVFrameConverter.ToIplImage();
     BufferedImage bImg,captured,detected,hist;
     File file;
-    String name,address;int mobile,acc;float bal,with;
+    String name,address;int mobile,acc,outputs;float bal,with;
     
     class captureImage implements Runnable{
         protected volatile boolean runn = false;
@@ -102,6 +102,7 @@ public class FrameRecognizer extends javax.swing.JFrame {
         {
             logger.log(Level.SEVERE, e.getMessage(), e);
         }
+        outputs=newUserid();
     }
     
     private void capture()
@@ -113,6 +114,14 @@ public class FrameRecognizer extends javax.swing.JFrame {
         t.start();
     }
     
+     private void close()
+    {
+        captureImage capt=new captureImage();
+        Thread t=new Thread(capt);
+        t.setDaemon(false);
+        capt.runn=false;
+        t.start();
+    }
     private void openFile()//alternative to real time detection
     {
         final JFrame frame = new JFrame("Select image to be recognized");
@@ -132,6 +141,34 @@ public class FrameRecognizer extends javax.swing.JFrame {
         }
     }
     
+    private int newUserid()//gets user id for the new user
+    {
+        ResultSet rs=null;
+        int usid=0;
+        try
+        {
+            CustomersDB udobj=new CustomersDB();
+            rs=udobj.getAlldetails();
+            if(rs.next() == false)
+            {
+                usid=0;
+            }
+            else
+            {
+                do
+                {
+                    usid=rs.getInt(1);
+                }
+                while(rs.next());
+            }
+        }
+        catch(SQLException e)
+        {
+            logger.log(Level.SEVERE, e.getMessage(), e);
+        }
+        int ids=usid-1;
+        return ids;
+    }
     /**
      * this is the method to recognize the faces
      */
@@ -142,11 +179,11 @@ public class FrameRecognizer extends javax.swing.JFrame {
         ResultSet rs=null,rs2=null;
         Customers cobj=new Customers();
         double feature[]=new double[80];
-        int id=1,pin=0;
+        int id=0,pin=0;
         feature=gf.getFeature(newImage);
         try
         {
-            id=nnet.recognizeFaces(feature,);//get the recognized id
+            id=nnet.recognizeFaces(feature,outputs);//get the recognized id
             pin=Integer.parseInt(txtPIN.getText());
             cobj.setID(id);
             cobj.setPin(pin);
@@ -165,9 +202,12 @@ public class FrameRecognizer extends javax.swing.JFrame {
                 address=rs2.getString(3);
                 mobile=rs2.getInt(4);
             }
+            close();
             FrameAuthenticate auth=new FrameAuthenticate(name, address, mobile, acc,bal, with);
-            auth.show();
-            this.dispose();
+            auth.show();            
+            FrameAtm atmo=new FrameAtm(id, pin);
+            atmo.show();            
+            this.hide();
         }
         catch(SQLException e)
         {
@@ -266,21 +306,20 @@ public class FrameRecognizer extends javax.swing.JFrame {
                                 .addGap(60, 60, 60)
                                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(244, 244, 244)
-                                .addComponent(btnVerify, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
                                 .addGap(126, 126, 126)
-                                .addComponent(txtPIN, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(txtPIN, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(208, 208, 208)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(44, 44, 44)
+                                        .addComponent(jLabel1))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(237, 237, 237)
+                                .addComponent(btnVerify, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 60, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(208, 208, 208)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(44, 44, 44)
-                        .addComponent(jLabel1)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -292,8 +331,8 @@ public class FrameRecognizer extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(txtPIN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(21, 21, 21)
+                .addComponent(txtPIN, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(btnVerify, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20)
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -346,7 +385,7 @@ public class FrameRecognizer extends javax.swing.JFrame {
         {
             try 
             {
-                //openFile();
+                openFile();
                 hist=ImageIO.read(file);
                 recognizeFaces(hist);
             } 

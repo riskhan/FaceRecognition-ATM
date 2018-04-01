@@ -179,9 +179,13 @@ public class NeuralNet {
             newData=TrainingSetImport.importFromFile(".\\trainingSet.txt",80,outputsize,",");
             newData.addRow(new DataSetRow(testImage,output));
             newData.normalize(new DecimalScaleNormalizer());
+            newData.saveAsTxt("trainingSetNEWW.txt",",");
             size=newData.size();
             DataSetRow inputRow=newData.getRowAt(size-1);
             input=inputRow.getInput();
+            
+            for(int i=0;i<input.length;i++)
+                System.out.println(input[i]);
             
             NeuralNetwork neural=NeuralNetwork.load(".\\faceRec.nnet");
             neural.setInput(input);
@@ -196,6 +200,8 @@ public class NeuralNet {
                     high=i;
                 }   
             }
+            for(int i=0;i<nOutput.length;i++)
+                System.out.println(nOutput[i]);
             id=high+1;
         }
         

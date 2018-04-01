@@ -9,6 +9,7 @@ package UIL;
 import DBL.Customers;
 import DBL.CustomersDB;
 import java.awt.HeadlessException;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -29,6 +30,7 @@ public class FrameAtm extends javax.swing.JFrame {
     int id,pin;
     float val;
     String bl;
+    String name,address;int mobile,acc;float bal,with;
     /**
      * Creates new form FrameAtm
      */
@@ -48,6 +50,7 @@ public class FrameAtm extends javax.swing.JFrame {
         id=1;
         pin=1234;
         generateBalance();
+        generateDetails();
     }
     
     public FrameAtm(int id,int pin) {
@@ -66,6 +69,7 @@ public class FrameAtm extends javax.swing.JFrame {
         this.id=id;
         this.pin=pin;
         generateBalance();
+        generateDetails();
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -76,26 +80,40 @@ public class FrameAtm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel4 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         txtAmount = new javax.swing.JTextField();
         btnWith = new javax.swing.JButton();
+        labelName = new javax.swing.JLabel();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+
+        jLabel4.setText("jLabel4");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel1.setText("WITHDRAW CASH");
+        jPanel1.setBackground(new java.awt.Color(204, 204, 204));
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel1.setText("WELCOME");
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel2.setText("TOTAL BALANCE");
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(51, 153, 0));
         jLabel3.setText("5000.0");
 
         txtAmount.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtAmount.setText("00.0");
+        txtAmount.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtAmountKeyTyped(evt);
+            }
+        });
 
         btnWith.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         btnWith.setText("Withdraw");
@@ -105,6 +123,20 @@ public class FrameAtm extends javax.swing.JFrame {
             }
         });
 
+        labelName.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        labelName.setText("Mohamed Arshad");
+
+        jButton3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jButton3.setText("View details");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        jButton4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jButton4.setText("Exit");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -112,49 +144,64 @@ public class FrameAtm extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(232, 232, 232)
-                        .addComponent(jLabel2))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(248, 248, 248)
-                        .addComponent(jLabel3))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(214, 214, 214)
-                        .addComponent(jLabel1))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(199, 199, 199)
-                        .addComponent(txtAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(235, 235, 235)
-                        .addComponent(btnWith)))
-                .addContainerGap(225, Short.MAX_VALUE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(130, 130, 130)
+                                .addComponent(jLabel1))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(107, 107, 107)
+                                .addComponent(labelName))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(117, 117, 117)
+                                .addComponent(jLabel2))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(136, 136, 136)
+                                .addComponent(jLabel3))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(87, 87, 87)
+                                .addComponent(txtAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(124, 124, 124)
+                                .addComponent(btnWith)))
+                        .addGap(0, 82, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(25, 25, 25)
+                .addContainerGap()
                 .addComponent(jLabel1)
-                .addGap(43, 43, 43)
-                .addComponent(jLabel2)
                 .addGap(18, 18, 18)
+                .addComponent(labelName)
+                .addGap(44, 44, 44)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel3)
-                .addGap(39, 39, 39)
+                .addGap(18, 18, 18)
                 .addComponent(txtAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
-                .addComponent(btnWith)
-                .addContainerGap(171, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(btnWith, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addComponent(jButton3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton4)
+                .addGap(23, 23, 23))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 70, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -198,6 +245,22 @@ public class FrameAtm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnWithActionPerformed
 
+    private void txtAmountKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtAmountKeyTyped
+       
+         
+        char enter = evt.getKeyChar();
+        if(!(Character.isDigit(enter) || enter==KeyEvent.VK_BACK_SPACE || enter==KeyEvent.VK_DELETE || enter==KeyEvent.VK_PERIOD))
+        {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtAmountKeyTyped
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        
+        FrameAuthenticate obj=new FrameAuthenticate(name,address, mobile, acc, bal, with);
+        obj.show();
+    }//GEN-LAST:event_jButton3ActionPerformed
+
     private void generateBalance()
     {
         ResultSet rs=null;
@@ -213,9 +276,37 @@ public class FrameAtm extends javax.swing.JFrame {
             {
                 val=rs.getFloat(5);
                 x=String.valueOf(val);
+                acc=rs.getInt(2);
+                bal=val;
+                with=rs.getFloat(6);
             }
             jLabel3.setText(x);
             bl=x;
+        }
+        catch(SQLException e)
+        {
+            logger.log(Level.SEVERE, e.getMessage(), e);
+            JOptionPane.showMessageDialog(null,"cannot retrive balance","ERROR",JOptionPane.ERROR_MESSAGE);
+        }
+    }
+     private void generateDetails()
+    {
+        ResultSet rs=null;
+        String x="";
+        try
+        {
+            CustomersDB obj=new CustomersDB();
+            Customers cobj=new Customers();
+            cobj.setPin(pin);
+            cobj.setID(id);
+            rs=obj.getDetails(cobj);
+            while(rs.next())
+            {
+                labelName.setText(rs.getString(2));
+                name=rs.getString(2);
+                address=rs.getString(2);
+                mobile=rs.getInt(4);
+            }
         }
         catch(SQLException e)
         {
@@ -260,10 +351,14 @@ public class FrameAtm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnWith;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel labelName;
     private javax.swing.JTextField txtAmount;
     // End of variables declaration//GEN-END:variables
 }

@@ -575,3 +575,93 @@ org.bytedeco.javacv.FrameGrabber$Exception: videoInput.setupDevice() Error: Coul
 	at UIL.FrameRecognizer$captureImage.run(FrameRecognizer.java:63)
 	at java.lang.Thread.run(Thread.java:745)
 
+Apr 01, 2018 3:01:01 PM UIL.FrameRecognizer$captureImage run
+WARNING: videoInput.getPixels() Error: Could not get pixels.
+org.bytedeco.javacv.FrameGrabber$Exception: videoInput.getPixels() Error: Could not get pixels.
+	at org.bytedeco.javacv.VideoInputFrameGrabber.grab(VideoInputFrameGrabber.java:171)
+	at UIL.FrameRecognizer$captureImage.run(FrameRecognizer.java:66)
+	at java.lang.Thread.run(Thread.java:745)
+
+Apr 01, 2018 3:01:01 PM UIL.FrameRecognizer$captureImage run
+WARNING: videoInput.setupDevice() Error: Could not setup device.
+org.bytedeco.javacv.FrameGrabber$Exception: videoInput.setupDevice() Error: Could not setup device.
+	at org.bytedeco.javacv.VideoInputFrameGrabber.start(VideoInputFrameGrabber.java:111)
+	at org.bytedeco.javacv.VideoInputFrameGrabber.start(VideoInputFrameGrabber.java:101)
+	at UIL.FrameRecognizer$captureImage.run(FrameRecognizer.java:63)
+	at java.lang.Thread.run(Thread.java:745)
+
+Apr 01, 2018 3:05:17 PM UIL.FrameRecognizer$captureImage run
+WARNING: videoInput.getPixels() Error: Could not get pixels.
+org.bytedeco.javacv.FrameGrabber$Exception: videoInput.getPixels() Error: Could not get pixels.
+	at org.bytedeco.javacv.VideoInputFrameGrabber.grab(VideoInputFrameGrabber.java:171)
+	at UIL.FrameRecognizer$captureImage.run(FrameRecognizer.java:66)
+	at java.lang.Thread.run(Thread.java:745)
+
+Apr 01, 2018 3:05:17 PM UIL.FrameRecognizer$captureImage run
+WARNING: videoInput.setupDevice() Error: Could not setup device.
+org.bytedeco.javacv.FrameGrabber$Exception: videoInput.setupDevice() Error: Could not setup device.
+	at org.bytedeco.javacv.VideoInputFrameGrabber.start(VideoInputFrameGrabber.java:111)
+	at org.bytedeco.javacv.VideoInputFrameGrabber.start(VideoInputFrameGrabber.java:101)
+	at UIL.FrameRecognizer$captureImage.run(FrameRecognizer.java:63)
+	at java.lang.Thread.run(Thread.java:745)
+
+Apr 01, 2018 3:11:28 PM UIL.FrameRecognizer$captureImage run
+WARNING: videoInput.getPixels() Error: Could not get pixels.
+org.bytedeco.javacv.FrameGrabber$Exception: videoInput.getPixels() Error: Could not get pixels.
+	at org.bytedeco.javacv.VideoInputFrameGrabber.grab(VideoInputFrameGrabber.java:171)
+	at UIL.FrameRecognizer$captureImage.run(FrameRecognizer.java:66)
+	at java.lang.Thread.run(Thread.java:745)
+
+Apr 01, 2018 3:11:28 PM UIL.FrameRecognizer$captureImage run
+WARNING: videoInput.setupDevice() Error: Could not setup device.
+org.bytedeco.javacv.FrameGrabber$Exception: videoInput.setupDevice() Error: Could not setup device.
+	at org.bytedeco.javacv.VideoInputFrameGrabber.start(VideoInputFrameGrabber.java:111)
+	at org.bytedeco.javacv.VideoInputFrameGrabber.start(VideoInputFrameGrabber.java:101)
+	at UIL.FrameRecognizer$captureImage.run(FrameRecognizer.java:63)
+	at java.lang.Thread.run(Thread.java:745)
+
+Apr 01, 2018 3:14:51 PM UIL.FrameRecognizer$captureImage run
+WARNING: videoInput.getPixels() Error: Could not get pixels.
+org.bytedeco.javacv.FrameGrabber$Exception: videoInput.getPixels() Error: Could not get pixels.
+	at org.bytedeco.javacv.VideoInputFrameGrabber.grab(VideoInputFrameGrabber.java:171)
+	at UIL.FrameRecognizer$captureImage.run(FrameRecognizer.java:66)
+	at java.lang.Thread.run(Thread.java:745)
+
+Apr 01, 2018 3:14:51 PM UIL.FrameRecognizer$captureImage run
+WARNING: videoInput.setupDevice() Error: Could not setup device.
+org.bytedeco.javacv.FrameGrabber$Exception: videoInput.setupDevice() Error: Could not setup device.
+	at org.bytedeco.javacv.VideoInputFrameGrabber.start(VideoInputFrameGrabber.java:111)
+	at org.bytedeco.javacv.VideoInputFrameGrabber.start(VideoInputFrameGrabber.java:101)
+	at UIL.FrameRecognizer$captureImage.run(FrameRecognizer.java:63)
+	at java.lang.Thread.run(Thread.java:745)
+
+Apr 01, 2018 3:19:23 PM UIL.FrameRecognizer$captureImage run
+WARNING: videoInput.getPixels() Error: Could not get pixels.
+org.bytedeco.javacv.FrameGrabber$Exception: videoInput.getPixels() Error: Could not get pixels.
+	at org.bytedeco.javacv.VideoInputFrameGrabber.grab(VideoInputFrameGrabber.java:171)
+	at UIL.FrameRecognizer$captureImage.run(FrameRecognizer.java:66)
+	at java.lang.Thread.run(Thread.java:745)
+
+Apr 01, 2018 3:19:23 PM UIL.FrameRecognizer$captureImage run
+WARNING: videoInput.setupDevice() Error: Could not setup device.
+org.bytedeco.javacv.FrameGrabber$Exception: videoInput.setupDevice() Error: Could not setup device.
+	at org.bytedeco.javacv.VideoInputFrameGrabber.start(VideoInputFrameGrabber.java:111)
+	at org.bytedeco.javacv.VideoInputFrameGrabber.start(VideoInputFrameGrabber.java:101)
+	at UIL.FrameRecognizer$captureImage.run(FrameRecognizer.java:63)
+	at java.lang.Thread.run(Thread.java:745)
+
+Apr 01, 2018 3:25:39 PM UIL.FrameRecognizer$captureImage run
+WARNING: videoInput.getPixels() Error: Could not get pixels.
+org.bytedeco.javacv.FrameGrabber$Exception: videoInput.getPixels() Error: Could not get pixels.
+	at org.bytedeco.javacv.VideoInputFrameGrabber.grab(VideoInputFrameGrabber.java:171)
+	at UIL.FrameRecognizer$captureImage.run(FrameRecognizer.java:66)
+	at java.lang.Thread.run(Thread.java:745)
+
+Apr 01, 2018 3:25:39 PM UIL.FrameRecognizer$captureImage run
+WARNING: videoInput.setupDevice() Error: Could not setup device.
+org.bytedeco.javacv.FrameGrabber$Exception: videoInput.setupDevice() Error: Could not setup device.
+	at org.bytedeco.javacv.VideoInputFrameGrabber.start(VideoInputFrameGrabber.java:111)
+	at org.bytedeco.javacv.VideoInputFrameGrabber.start(VideoInputFrameGrabber.java:101)
+	at UIL.FrameRecognizer$captureImage.run(FrameRecognizer.java:63)
+	at java.lang.Thread.run(Thread.java:745)
+

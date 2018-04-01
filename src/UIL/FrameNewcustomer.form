@@ -222,10 +222,16 @@
         <Component class="javax.swing.JTextField" name="txtName">
         </Component>
         <Component class="javax.swing.JTextField" name="txtMobile">
+          <Events>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtMobileKeyTyped"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="txtAddress">
         </Component>
         <Component class="javax.swing.JTextField" name="txtAccountNumber">
+          <Events>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtAccountNumberKeyTyped"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

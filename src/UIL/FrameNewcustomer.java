@@ -13,6 +13,7 @@ import DBL.Customers;
 import DBL.CustomersDB;
 import java.awt.Graphics;
 import java.awt.HeadlessException;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -231,6 +232,18 @@ public class FrameNewcustomer extends javax.swing.JFrame {
 
         jLabel6.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         jLabel6.setText("Account Number");
+
+        txtMobile.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtMobileKeyTyped(evt);
+            }
+        });
+
+        txtAccountNumber.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtAccountNumberKeyTyped(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -502,6 +515,20 @@ public class FrameNewcustomer extends javax.swing.JFrame {
         obj.show();
         this.dispose();
     }//GEN-LAST:event_btnMainActionPerformed
+
+    private void txtAccountNumberKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtAccountNumberKeyTyped
+       
+    }//GEN-LAST:event_txtAccountNumberKeyTyped
+
+    private void txtMobileKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMobileKeyTyped
+        
+        char enter = evt.getKeyChar();
+        if(!(Character.isDigit(enter) || enter==KeyEvent.VK_BACK_SPACE || enter==KeyEvent.VK_DELETE || enter==KeyEvent.VK_PERIOD))
+        {
+            JOptionPane.showMessageDialog(null,"enter numbers only");
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtMobileKeyTyped
 
     /**
      * @param args the command line arguments

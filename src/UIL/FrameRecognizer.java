@@ -166,7 +166,8 @@ public class FrameRecognizer extends javax.swing.JFrame {
         {
             logger.log(Level.SEVERE, e.getMessage(), e);
         }
-        int ids=usid-1;
+        int ids=usid;
+        System.out.println(ids);
         return ids;
     }
     /**
@@ -176,10 +177,10 @@ public class FrameRecognizer extends javax.swing.JFrame {
     {
         NeuralNet nnet=new NeuralNet();
         GaborFeature gf=new GaborFeature();
-        ResultSet rs=null,rs2=null;
+        ResultSet rs;
         Customers cobj=new Customers();
         double feature[]=new double[80];
-        int id=0,pin=0;
+        int id,pin;
         feature=gf.getFeature(newImage);
         try
         {
@@ -189,7 +190,17 @@ public class FrameRecognizer extends javax.swing.JFrame {
             cobj.setPin(pin);
             CustomersDB cdobj=new CustomersDB();
             rs=cdobj.getAccountdetails(cobj);
-            rs2=cdobj.getDetails(cobj);
+            if(rs.next()==false)
+            {
+                JOptionPane.showMessageDialog(null,"Unauthorized User - Try again","ERROR",JOptionPane.ERROR_MESSAGE);
+            }
+            else
+            {
+                FrameAtm atmo=new FrameAtm(id, pin);
+                atmo.show(); 
+                this.hide();
+            }
+            /*rs2=cdobj.getDetails(cobj);
             while(rs.next())
             {
                 acc=rs.getInt(2);
@@ -201,13 +212,7 @@ public class FrameRecognizer extends javax.swing.JFrame {
                 name=rs2.getString(2);
                 address=rs2.getString(3);
                 mobile=rs2.getInt(4);
-            }
-            close();
-            FrameAuthenticate auth=new FrameAuthenticate(name, address, mobile, acc,bal, with);
-            auth.show();            
-            FrameAtm atmo=new FrameAtm(id, pin);
-            atmo.show();            
-            this.hide();
+            }*/
         }
         catch(SQLException e)
         {
@@ -290,6 +295,11 @@ public class FrameRecognizer extends javax.swing.JFrame {
         jToolBar1.add(btnGotologin);
 
         txtPIN.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtPIN.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPINKeyTyped(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -364,6 +374,11 @@ public class FrameRecognizer extends javax.swing.JFrame {
                 else
                 {
                     hist=pobj.histogramEqualization(detected);
+                    try {
+                        ImageIO.write(hist,"jpg",(new File(".\\recognized.jpg")));
+                    } catch (IOException ex) {
+                        Logger.getLogger(FrameRecognizer.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     recognizeFaces(hist);
                 }
                 
@@ -401,6 +416,15 @@ public class FrameRecognizer extends javax.swing.JFrame {
         obj.show();
         this.dispose();
     }//GEN-LAST:event_btnGotologinActionPerformed
+
+    private void txtPINKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPINKeyTyped
+        
+         char enter = evt.getKeyChar();
+        if(!(Character.isDigit(enter) || enter==KeyEvent.VK_BACK_SPACE || enter==KeyEvent.VK_DELETE || enter==KeyEvent.VK_PERIOD))
+        {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtPINKeyTyped
 
     /**
      * @param args the command line arguments

@@ -157,7 +157,7 @@ public class FrameTraining extends javax.swing.JFrame {
 
         jToolBar1.setRollover(true);
 
-        btnAdmin.setText("Admin");
+        btnAdmin.setText("Menu");
         btnAdmin.setFocusable(false);
         btnAdmin.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnAdmin.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -185,9 +185,9 @@ public class FrameTraining extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnLoad, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
+                        .addContainerGap()
                         .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(55, 55, 55)
+                        .addGap(65, 65, 65)
                         .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
@@ -281,7 +281,7 @@ public class FrameTraining extends javax.swing.JFrame {
                 jLabel5.setText("Training.....");
                 NeuralNet nnet=new NeuralNet();
                 error=NeuralNet.trainNetwork(output,hidden ,lrate,momentum);//look into this and make non static
-                jLabel5.setText("Error rate : "+error[0]+"   Iterations : "+error[1]);
+                jLabel5.setText("Error rate: "+error[0]+"   Iterations: "+error[1]);
             }
             catch(NumberFormatException e)
             {

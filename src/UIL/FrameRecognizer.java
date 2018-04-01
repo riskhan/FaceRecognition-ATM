@@ -198,6 +198,8 @@ public class FrameRecognizer extends javax.swing.JFrame {
             {
                 FrameAtm atmo=new FrameAtm(id, pin);
                 atmo.show(); 
+                grabber.stop();
+                grabber.close();
                 this.hide();
             }
             /*rs2=cdobj.getDetails(cobj);
@@ -218,6 +220,8 @@ public class FrameRecognizer extends javax.swing.JFrame {
         {
             JOptionPane.showMessageDialog(null,"cannot retrive values","ERROR",JOptionPane.ERROR_MESSAGE);
             logger.log(Level.WARNING, "Cannot retrive values {0}", e);
+        } catch (FrameGrabber.Exception ex) {
+            Logger.getLogger(FrameRecognizer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

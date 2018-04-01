@@ -510,10 +510,15 @@ public class FrameNewcustomer extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnMainActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMainActionPerformed
-
-        FrameAdministrator obj=new FrameAdministrator();
-        obj.show();
-        this.dispose();
+         try {
+             FrameAdministrator obj=new FrameAdministrator();
+             obj.show();
+             grabber.stop();
+             grabber.close();
+             this.dispose();
+         } catch (FrameGrabber.Exception ex) {
+             Logger.getLogger(FrameNewcustomer.class.getName()).log(Level.SEVERE, null, ex);
+         }
     }//GEN-LAST:event_btnMainActionPerformed
 
     private void txtAccountNumberKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtAccountNumberKeyTyped

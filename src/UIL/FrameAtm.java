@@ -88,15 +88,16 @@ public class FrameAtm extends javax.swing.JFrame {
         txtAmount = new javax.swing.JTextField();
         btnWith = new javax.swing.JButton();
         labelName = new javax.swing.JLabel();
-        jButton3 = new javax.swing.JButton();
+        btnViewdetails = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
 
         jLabel4.setText("jLabel4");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("ATM-Withdraw");
 
-        jPanel1.setBackground(new java.awt.Color(204, 204, 204));
+        jPanel1.setBackground(new java.awt.Color(0, 102, 102));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel1.setText("WELCOME");
@@ -105,7 +106,7 @@ public class FrameAtm extends javax.swing.JFrame {
         jLabel2.setText("TOTAL BALANCE");
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(51, 153, 0));
+        jLabel3.setForeground(new java.awt.Color(255, 255, 0));
         jLabel3.setText("5000.0");
 
         txtAmount.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -127,11 +128,11 @@ public class FrameAtm extends javax.swing.JFrame {
         labelName.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         labelName.setText("Mohamed Arshad");
 
-        jButton3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jButton3.setText("View details");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btnViewdetails.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnViewdetails.setText("View details");
+        btnViewdetails.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btnViewdetailsActionPerformed(evt);
             }
         });
 
@@ -179,7 +180,7 @@ public class FrameAtm extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 120, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3))
+                    .addComponent(btnViewdetails))
                 .addGap(22, 22, 22))
         );
         jPanel1Layout.setVerticalGroup(
@@ -196,7 +197,7 @@ public class FrameAtm extends javax.swing.JFrame {
                 .addGap(26, 26, 26)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnViewdetails, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(27, 27, 27)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -267,11 +268,11 @@ public class FrameAtm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_txtAmountKeyTyped
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void btnViewdetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewdetailsActionPerformed
         
         FrameAuthenticate obj=new FrameAuthenticate(name,address, mobile, acc, bal, with);
         obj.show();
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_btnViewdetailsActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
@@ -370,8 +371,8 @@ public class FrameAtm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnViewdetails;
     private javax.swing.JButton btnWith;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;

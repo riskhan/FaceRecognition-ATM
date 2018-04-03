@@ -24,6 +24,8 @@ import javax.swing.JOptionPane;
  */
 public class FrameTraining extends javax.swing.JFrame {
 
+    private static FrameTraining instance;
+    
     private static final Logger logger = Logger.getLogger(FrameTraining.class.getName());
     FileHandler fh;
     /**
@@ -48,6 +50,13 @@ public class FrameTraining extends javax.swing.JFrame {
         txtHidden.setText("15");
         txtMomentum.setText("0.7");
         txtlrate.setText("0.2");
+    }
+    
+    public static FrameTraining getInstance() {
+        if (instance == null)
+            instance = new FrameTraining();
+
+        return instance;
     }
     
     private int newUserid()//gets user id for the new user

@@ -45,6 +45,7 @@ import org.bytedeco.javacv.VideoInputFrameGrabber;
  */
 public class FrameNewcustomer extends javax.swing.JFrame {
 
+    //private static FrameNewcustomer instance;
      private static final Logger logger = Logger.getLogger(FrameNewcustomer.class.getName());
      FileHandler fh;
     //definitions for image capture
@@ -114,6 +115,13 @@ public class FrameNewcustomer extends javax.swing.JFrame {
             logger.log(Level.SEVERE, e.getMessage(), e);
         }
     }
+    
+    /*public static FrameNewcustomer getInstance() {
+        if (instance == null)
+            instance = new FrameNewcustomer();
+
+        return instance;
+    }*/
     private void openWebcam()//method to show the webcam from the runnable class
     {
         captureImage capt=new captureImage();
@@ -203,8 +211,6 @@ public class FrameNewcustomer extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         labelCapturedHist = new javax.swing.JLabel();
         btnMain = new javax.swing.JButton();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         btnCapture.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnCapture.setText("CAPTURE");

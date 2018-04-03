@@ -67,7 +67,7 @@ public class FrameLogin extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
 
-        jLabel1.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         jLabel1.setText("LOGIN");
 
         jLabel2.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N

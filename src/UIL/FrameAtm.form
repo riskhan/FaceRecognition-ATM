@@ -52,44 +52,42 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
-                  <EmptySpace min="268" pref="268" max="-2" attributes="0"/>
-                  <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <Group type="102" attributes="0">
-                  <EmptySpace min="275" pref="275" max="-2" attributes="0"/>
-                  <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <Group type="102" attributes="0">
-                  <EmptySpace min="522" pref="522" max="-2" attributes="0"/>
-                  <Component id="btnViewdetails" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <Group type="102" attributes="0">
-                  <EmptySpace min="522" pref="522" max="-2" attributes="0"/>
-                  <Component id="btnExit" min="-2" pref="99" max="-2" attributes="0"/>
-              </Group>
-              <Group type="102" attributes="0">
-                  <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
-                  <Component id="jLabel6" min="-2" pref="70" max="-2" attributes="0"/>
-              </Group>
-              <Group type="102" attributes="0">
-                  <EmptySpace min="227" pref="227" max="-2" attributes="0"/>
-                  <Component id="btnWith" min="-2" pref="175" max="-2" attributes="0"/>
-              </Group>
-              <Group type="102" attributes="0">
-                  <EmptySpace min="21" pref="21" max="-2" attributes="0"/>
-                  <Component id="btnDeposit" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <Group type="102" attributes="0">
-                  <EmptySpace min="239" pref="239" max="-2" attributes="0"/>
-                  <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <Group type="102" attributes="0">
                   <EmptySpace min="229" pref="229" max="-2" attributes="0"/>
                   <Component id="labelName" min="-2" max="-2" attributes="0"/>
               </Group>
               <Group type="102" attributes="0">
                   <EmptySpace min="227" pref="227" max="-2" attributes="0"/>
                   <Component id="txtAmount" min="-2" pref="175" max="-2" attributes="0"/>
+                  <EmptySpace min="120" pref="120" max="-2" attributes="0"/>
+                  <Component id="btnViewdetails" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <Group type="102" attributes="0">
+                  <EmptySpace min="250" pref="250" max="-2" attributes="0"/>
+                  <Component id="jLabel6" min="-2" pref="130" max="-2" attributes="0"/>
+              </Group>
+              <Group type="102" attributes="0">
+                  <EmptySpace min="275" pref="275" max="-2" attributes="0"/>
+                  <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <Group type="102" attributes="0">
+                  <EmptySpace min="239" pref="239" max="-2" attributes="0"/>
+                  <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <Group type="102" attributes="0">
+                  <EmptySpace min="522" pref="522" max="-2" attributes="0"/>
+                  <Component id="btnExit" min="-2" pref="99" max="-2" attributes="0"/>
+              </Group>
+              <Group type="102" attributes="0">
+                  <EmptySpace min="227" pref="227" max="-2" attributes="0"/>
+                  <Component id="btnWith" min="-2" pref="175" max="-2" attributes="0"/>
+              </Group>
+              <Group type="102" attributes="0">
+                  <EmptySpace min="268" pref="268" max="-2" attributes="0"/>
+                  <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <Group type="102" attributes="0">
+                  <EmptySpace min="21" pref="21" max="-2" attributes="0"/>
+                  <Component id="btnDeposit" min="-2" max="-2" attributes="0"/>
               </Group>
               <Component id="jLabel5" min="-2" pref="640" max="-2" attributes="0"/>
           </Group>
@@ -97,44 +95,42 @@
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
-                  <EmptySpace min="11" pref="11" max="-2" attributes="0"/>
-                  <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="46" pref="46" max="-2" attributes="0"/>
+                  <Component id="labelName" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="142" pref="142" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <EmptySpace min="3" pref="3" max="-2" attributes="0"/>
+                          <Component id="txtAmount" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Component id="btnViewdetails" min="-2" pref="40" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace min="140" pref="140" max="-2" attributes="0"/>
+                  <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
               </Group>
               <Group type="102" attributes="0">
                   <EmptySpace min="162" pref="162" max="-2" attributes="0"/>
                   <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
               </Group>
               <Group type="102" attributes="0">
-                  <EmptySpace min="210" pref="210" max="-2" attributes="0"/>
-                  <Component id="btnViewdetails" min="-2" pref="40" max="-2" attributes="0"/>
+                  <EmptySpace min="122" pref="122" max="-2" attributes="0"/>
+                  <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
               </Group>
               <Group type="102" attributes="0">
                   <EmptySpace min="278" pref="278" max="-2" attributes="0"/>
                   <Component id="btnExit" min="-2" pref="40" max="-2" attributes="0"/>
               </Group>
               <Group type="102" attributes="0">
-                  <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
-                  <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <Group type="102" attributes="0">
                   <EmptySpace min="277" pref="277" max="-2" attributes="0"/>
                   <Component id="btnWith" min="-2" pref="40" max="-2" attributes="0"/>
               </Group>
               <Group type="102" attributes="0">
+                  <EmptySpace min="11" pref="11" max="-2" attributes="0"/>
+                  <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <Group type="102" attributes="0">
                   <EmptySpace min="210" pref="210" max="-2" attributes="0"/>
                   <Component id="btnDeposit" min="-2" pref="40" max="-2" attributes="0"/>
-              </Group>
-              <Group type="102" attributes="0">
-                  <EmptySpace min="122" pref="122" max="-2" attributes="0"/>
-                  <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <Group type="102" attributes="0">
-                  <EmptySpace min="46" pref="46" max="-2" attributes="0"/>
-                  <Component id="labelName" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <Group type="102" attributes="0">
-                  <EmptySpace min="213" pref="213" max="-2" attributes="0"/>
-                  <Component id="txtAmount" min="-2" max="-2" attributes="0"/>
               </Group>
               <Component id="jLabel5" min="-2" pref="440" max="-2" attributes="0"/>
           </Group>
@@ -236,7 +232,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tahoma" size="11" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="05-04-2018"/>
+            <Property name="text" type="java.lang.String" value="05-04-2018 17:15:58"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel5">

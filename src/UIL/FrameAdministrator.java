@@ -119,7 +119,7 @@ public class FrameAdministrator extends javax.swing.JFrame {
         jMenuItem3 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Face Recognizer - Administrator");
+        setTitle("ABC Bank- Administrator");
         setBackground(new java.awt.Color(204, 204, 204));
 
         jLabel1.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
@@ -307,9 +307,8 @@ public class FrameAdministrator extends javax.swing.JFrame {
                                 .addComponent(txtName)
                                 .addComponent(txtAddress)
                                 .addComponent(txtCustid, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(btnClear, javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(btnUpdatecustomer, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(btnClear, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnUpdatecustomer, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(36, 36, 36))
         );
         jPanel2Layout.setVerticalGroup(

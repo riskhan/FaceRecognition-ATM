@@ -9,17 +9,22 @@ package UIL;
 import DBL.Customers;
 import DBL.CustomersDB;
 import java.awt.HeadlessException;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 import javax.swing.JOptionPane;
+import javax.swing.Timer;
 
 /**
  *
@@ -53,6 +58,7 @@ public class FrameAtm extends javax.swing.JFrame {
         pin=1234;
         generateBalance();
         generateDetails();
+        showTime();
     }
     
     public FrameAtm(int id,int pin) {
@@ -68,8 +74,9 @@ public class FrameAtm extends javax.swing.JFrame {
         {
             logger.log(Level.SEVERE, e.getMessage(), e);
         }
-        String date = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
-        jLabel6.setText(date);
+        /*String date = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+        jLabel6.setText(date);*/
+        showTime();
         this.id=id;
         this.pin=pin;
         generateBalance();
@@ -159,7 +166,7 @@ public class FrameAtm extends javax.swing.JFrame {
         });
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel6.setText("05-04-2018");
+        jLabel6.setText("05-04-2018 17:15:58");
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/blue3.jpg"))); // NOI18N
 
@@ -168,69 +175,67 @@ public class FrameAtm extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(268, 268, 268)
-                .addComponent(jLabel1))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(275, 275, 275)
-                .addComponent(jLabel3))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(522, 522, 522)
-                .addComponent(btnViewdetails))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(522, 522, 522)
-                .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(227, 227, 227)
-                .addComponent(btnWith, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(btnDeposit))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(239, 239, 239)
-                .addComponent(jLabel2))
-            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(229, 229, 229)
                 .addComponent(labelName))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(227, 227, 227)
-                .addComponent(txtAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(txtAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(120, 120, 120)
+                .addComponent(btnViewdetails))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(250, 250, 250)
+                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(275, 275, 275)
+                .addComponent(jLabel3))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(239, 239, 239)
+                .addComponent(jLabel2))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(522, 522, 522)
+                .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(227, 227, 227)
+                .addComponent(btnWith, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(268, 268, 268)
+                .addComponent(jLabel1))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addComponent(btnDeposit))
             .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 640, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(11, 11, 11)
-                .addComponent(jLabel1))
+                .addGap(46, 46, 46)
+                .addComponent(labelName)
+                .addGap(142, 142, 142)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(3, 3, 3)
+                        .addComponent(txtAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnViewdetails, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(140, 140, 140)
+                .addComponent(jLabel6))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(162, 162, 162)
                 .addComponent(jLabel3))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(210, 210, 210)
-                .addComponent(btnViewdetails, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(122, 122, 122)
+                .addComponent(jLabel2))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(278, 278, 278)
                 .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addComponent(jLabel6))
-            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(277, 277, 277)
                 .addComponent(btnWith, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(11, 11, 11)
+                .addComponent(jLabel1))
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(210, 210, 210)
                 .addComponent(btnDeposit, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(122, 122, 122)
-                .addComponent(jLabel2))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(46, 46, 46)
-                .addComponent(labelName))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(213, 213, 213)
-                .addComponent(txtAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 440, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
@@ -258,7 +263,7 @@ public class FrameAtm extends javax.swing.JFrame {
         {
             JOptionPane.showMessageDialog(null,"Select amount less than balance","ERROR",JOptionPane.ERROR_MESSAGE);
         }
-        else if(Float.parseFloat(txtAmount.getText())==0)
+        else if(Float.parseFloat(txtAmount.getText())==0||Float.parseFloat(txtAmount.getText())<100)
         {
             JOptionPane.showMessageDialog(null,"Invalid amount","ERROR",JOptionPane.ERROR_MESSAGE);
         }
@@ -304,8 +309,8 @@ public class FrameAtm extends javax.swing.JFrame {
         
         generateBalance();
         generateDetails();
-        FrameAuthenticate obj=new FrameAuthenticate(name,address, mobile, acc, bal, with);
-        //FrameAuthenticate obj=FrameAuthenticate.getInstance("xxx",address, mobile, acc, bal, with);
+        FrameViewdetails obj=new FrameViewdetails(name,address, mobile, acc, bal, with);
+        //FrameAuthenticate obj=FrameViewdetails.getInstance("xxx",address, mobile, acc, bal, with);
         obj.show();
     }//GEN-LAST:event_btnViewdetailsActionPerformed
 
@@ -325,7 +330,7 @@ public class FrameAtm extends javax.swing.JFrame {
         {
             JOptionPane.showMessageDialog(null,"Enter amount","ERROR",JOptionPane.ERROR_MESSAGE);
         }
-        else if(Float.parseFloat(txtAmount.getText())==0||Float.parseFloat(txtAmount.getText())<500||
+        else if(Float.parseFloat(txtAmount.getText())==0||Float.parseFloat(txtAmount.getText())<100||
                 Float.parseFloat(txtAmount.getText())>80000)
         {
             JOptionPane.showMessageDialog(null,"Invalid amount","ERROR",JOptionPane.ERROR_MESSAGE);
@@ -412,6 +417,22 @@ public class FrameAtm extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null,"cannot retrive balance","ERROR",JOptionPane.ERROR_MESSAGE);
         }
     }
+     
+     private void showTime()
+     {
+         final DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+         int interval = 1000; // 1000 ms
+         Calendar now = Calendar.getInstance();
+         jLabel6.setText(dateFormat.format(now.getTime()));
+          new Timer(1000, new ActionListener() {
+              @Override
+              public void actionPerformed(ActionEvent e) {
+                 Calendar now = Calendar.getInstance();
+                 jLabel6.setText(dateFormat.format(now.getTime()));
+             }
+          }).start();
+          pack();
+     }
     /**
      * @param args the command line arguments
      */

@@ -13,13 +13,13 @@ import java.awt.image.BufferedImage;
  *
  * @author User
  */
-public class FrameAuthenticate extends javax.swing.JFrame {
+public class FrameViewdetails extends javax.swing.JFrame {
 
     /**
      * Creates new form frameAuthenticate
      */
     
-    public FrameAuthenticate() {
+    public FrameViewdetails() {
         initComponents();
     }
     
@@ -27,7 +27,7 @@ public class FrameAuthenticate extends javax.swing.JFrame {
     int mobile,accNo;
     float withdraw,balance;
     BufferedImage image;
-    public FrameAuthenticate(String name,String address,int mobile,int accNo,float bal,float with){ 
+    public FrameViewdetails(String name,String address,int mobile,int accNo,float bal,float with){ 
         initComponents();
         /*this.name=name;
         this.address=address;
@@ -68,7 +68,7 @@ public class FrameAuthenticate extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Authenticated user");
+        setTitle("ABC Bank - Customer Details");
         setBackground(new java.awt.Color(204, 204, 255));
 
         jPanel1.setBackground(new java.awt.Color(153, 204, 255));
@@ -241,20 +241,20 @@ public class FrameAuthenticate extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrameAuthenticate.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameViewdetails.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrameAuthenticate.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameViewdetails.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrameAuthenticate.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameViewdetails.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrameAuthenticate.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameViewdetails.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FrameAuthenticate().setVisible(true);
+                new FrameViewdetails().setVisible(true);
             }
         });
     }

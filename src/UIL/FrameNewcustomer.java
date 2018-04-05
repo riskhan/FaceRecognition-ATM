@@ -37,6 +37,7 @@ import org.bytedeco.javacpp.opencv_core.IplImage;
 import org.bytedeco.javacv.Frame;
 import org.bytedeco.javacv.FrameGrabber;
 import org.bytedeco.javacv.OpenCVFrameConverter;
+import org.bytedeco.javacv.OpenCVFrameGrabber;
 import org.bytedeco.javacv.VideoInputFrameGrabber;
 
 /**
@@ -64,7 +65,8 @@ public class FrameNewcustomer extends javax.swing.JFrame {
         public void run() {
             try
             {
-                grabber=new VideoInputFrameGrabber(0);
+                //grabber=new VideoInputFrameGrabber(0);
+                grabber=new  OpenCVFrameGrabber(0);
                 grabber.start();
                 while(runn)
                 {
@@ -105,7 +107,7 @@ public class FrameNewcustomer extends javax.swing.JFrame {
         generateAccount();
          try
         {
-            fh = new FileHandler(".\\Logger.log", true);
+            fh = new FileHandler(".\\Loggers\\Logger.log", true);
             logger.addHandler(fh);
             SimpleFormatter formatter = new SimpleFormatter();  
             fh.setFormatter(formatter); 
@@ -211,6 +213,8 @@ public class FrameNewcustomer extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         labelCapturedHist = new javax.swing.JLabel();
         btnMain = new javax.swing.JButton();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         btnCapture.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnCapture.setText("CAPTURE");
@@ -470,7 +474,9 @@ public class FrameNewcustomer extends javax.swing.JFrame {
                 {
                     JOptionPane.showMessageDialog(rootPane,"Created successfully","Created user",JOptionPane.INFORMATION_MESSAGE);
                     FrameTraining aobj=new FrameTraining();
-                    aobj.show();     
+                    aobj.show();
+                    grabber.stop();
+                    grabber.close();
                     this.dispose();
                 }
                 else
@@ -478,7 +484,7 @@ public class FrameNewcustomer extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(rootPane,"Could not create user","ERROR",JOptionPane.ERROR_MESSAGE);
                 }
             }
-            catch(NumberFormatException | HeadlessException e)
+            catch(NumberFormatException | HeadlessException | FrameGrabber.Exception e)
             {
                 logger.log(Level.SEVERE, e.getMessage(), e);
                 JOptionPane.showMessageDialog(rootPane,"Could not create user"+e,"ERROR",JOptionPane.ERROR_MESSAGE);
@@ -519,7 +525,7 @@ public class FrameNewcustomer extends javax.swing.JFrame {
              obj.show();
              grabber.stop();
              grabber.close();
-             this.hide();
+             this.dispose();
          } catch (FrameGrabber.Exception e) {
              logger.log(Level.SEVERE, e.getMessage(), e);
          }

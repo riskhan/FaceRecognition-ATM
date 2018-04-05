@@ -18,6 +18,7 @@ public class FrameAuthenticate extends javax.swing.JFrame {
     /**
      * Creates new form frameAuthenticate
      */
+    
     public FrameAuthenticate() {
         initComponents();
     }
@@ -26,7 +27,7 @@ public class FrameAuthenticate extends javax.swing.JFrame {
     int mobile,accNo;
     float withdraw,balance;
     BufferedImage image;
-    public FrameAuthenticate(String name,String address,int mobile,int accNo,float bal,float with){//add the parameter for the jpanel image  
+    public FrameAuthenticate(String name,String address,int mobile,int accNo,float bal,float with){ 
         initComponents();
         /*this.name=name;
         this.address=address;
@@ -40,7 +41,6 @@ public class FrameAuthenticate extends javax.swing.JFrame {
         txtLastwidth.setText(String.valueOf(with));
         
     }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -71,7 +71,7 @@ public class FrameAuthenticate extends javax.swing.JFrame {
         setTitle("Authenticated user");
         setBackground(new java.awt.Color(204, 204, 255));
 
-        jPanel1.setBackground(new java.awt.Color(204, 204, 204));
+        jPanel1.setBackground(new java.awt.Color(153, 204, 255));
 
         jLabel4.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         jLabel4.setText("Name");

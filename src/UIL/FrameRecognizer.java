@@ -85,7 +85,13 @@ public class FrameRecognizer extends javax.swing.JFrame {
             {
                 logger.log(Level.WARNING,e.getMessage(),e);
             }
-        }    
+        } 
+        public Boolean getStop() {
+            return runn;
+        }
+        public void setStop(Boolean runn) {
+            this.runn = runn;
+        } 
     }
     /**
      * Creates new form videoFrame
@@ -103,6 +109,7 @@ public class FrameRecognizer extends javax.swing.JFrame {
         catch(IOException e)
         {
             logger.log(Level.SEVERE, e.getMessage(), e);
+            fh.close();
         }
         outputs=newUserid();
     }
@@ -131,6 +138,7 @@ public class FrameRecognizer extends javax.swing.JFrame {
             catch(Exception e)
             {
                 logger.log(Level.WARNING, "Error in reading file {0}", e);
+                fh.close();
             }
         }
     }
@@ -159,6 +167,7 @@ public class FrameRecognizer extends javax.swing.JFrame {
         catch(SQLException e)
         {
             logger.log(Level.SEVERE, e.getMessage(), e);
+            fh.close();
         }
         int ids=usid;
         System.out.println(ids);
@@ -196,6 +205,7 @@ public class FrameRecognizer extends javax.swing.JFrame {
                 }
                 else
                 {
+                    new captureImage().setStop(true);
                     FrameAtm atmo=new FrameAtm(id, pin);
                     atmo.show(); 
                     grabber.stop();
@@ -209,8 +219,10 @@ public class FrameRecognizer extends javax.swing.JFrame {
         {
             JOptionPane.showMessageDialog(null,"cannot retrive values","ERROR",JOptionPane.ERROR_MESSAGE);
             logger.log(Level.WARNING, "Cannot retrive values {0}", e);
+            fh.close();
         } catch (FrameGrabber.Exception ex) {
             logger.log(Level.WARNING, "Cannot retrive values {0}", ex);
+            fh.close();
         }
     }
 
@@ -383,7 +395,8 @@ public class FrameRecognizer extends javax.swing.JFrame {
                     try {
                         ImageIO.write(hist,"jpg",(new File(".\\recognized.jpg")));
                     } catch (IOException ex) {
-                        Logger.getLogger(FrameRecognizer.class.getName()).log(Level.SEVERE, null, ex);
+                        logger.log(Level.SEVERE, ex.getMessage(), ex);
+                        fh.close();
                     }
                     recognizeFaces(hist);
                 }
@@ -392,6 +405,7 @@ public class FrameRecognizer extends javax.swing.JFrame {
             catch (HeadlessException e)
             {
                 logger.log(Level.SEVERE, e.getMessage(), e);
+                fh.close();
             }
         }
     }//GEN-LAST:event_btnVerifyActionPerformed
@@ -413,6 +427,7 @@ public class FrameRecognizer extends javax.swing.JFrame {
             catch (IOException e) 
             {
                 logger.log(Level.WARNING, "Error in reading image{0}", e);
+                fh.close();
             }
         }
     }//GEN-LAST:event_btnFileimageActionPerformed
@@ -425,7 +440,8 @@ public class FrameRecognizer extends javax.swing.JFrame {
                 grabber.close();
                 this.dispose();
         } catch (FrameGrabber.Exception ex) {
-            Logger.getLogger(FrameRecognizer.class.getName()).log(Level.SEVERE, null, ex);
+             logger.log(Level.WARNING, "Error in reading image{0}", ex);
+             fh.close();
         }
     }//GEN-LAST:event_btnGotologinActionPerformed
 

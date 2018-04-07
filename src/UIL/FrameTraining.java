@@ -6,9 +6,12 @@
 
 package UIL;
 
+import BLL.GaborFeature;
 import BLL.NeuralNet;
 import DBL.CustomersDB;
 import java.awt.HeadlessException;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,6 +19,9 @@ import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
+import javax.imageio.ImageIO;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
@@ -28,6 +34,8 @@ public class FrameTraining extends javax.swing.JFrame {
     
     private static final Logger logger = Logger.getLogger(FrameTraining.class.getName());
     FileHandler fh;
+    File file;
+    String imgname,imgid,imgnid;
     /**
      * Creates new form FrameTrainings
      */
@@ -293,13 +301,49 @@ public class FrameTraining extends javax.swing.JFrame {
 
     private void btnTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTestActionPerformed
         
-        
+        NeuralNet obj=new NeuralNet();
+        GaborFeature gf=new GaborFeature();
+        double feature[]=new double[80];
+        int id=0;
+        try
+        {
+            openFile();
+            BufferedImage test=ImageIO.read(file);
+            imgname=file.getName();
+            imgid=imgname.substring(0, 1); 
+            feature=gf.getFeature(test);
+            id=obj.testingFaces(feature, output);
+            imgnid=String.valueOf(id);
+            jLabel5.setText("Actual results :"+imgnid+"     Expected results :"+imgid);
+        }
+        catch(IOException e)
+        {
+            logger.log(Level.WARNING, "Error in reading file {0}", e);
+        }
     }//GEN-LAST:event_btnTestActionPerformed
 
     private void txtHiddenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtHiddenActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtHiddenActionPerformed
 
+    private void openFile()//alternative to real time detection
+    {
+        final JFrame frame = new JFrame("Select image to be recognized");
+        JFileChooser fc=new JFileChooser(".\\testSet");
+        int returnVal = fc.showOpenDialog(frame);
+        if(returnVal==JFileChooser.APPROVE_OPTION)
+        {
+            file=fc.getSelectedFile();
+            try
+            {
+                String filename=file.toString();
+            }
+            catch(Exception e)
+            {
+                logger.log(Level.WARNING, "Error in reading file {0}", e);
+            }
+        }
+    }
     /**
      * @param args the command line arguments
      */

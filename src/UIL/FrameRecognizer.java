@@ -179,43 +179,38 @@ public class FrameRecognizer extends javax.swing.JFrame {
         try
         {
             id=nnet.recognizeFaces(feature,outputs);//get the recognized id
-            pin=Integer.parseInt(txtPIN.getText());
-            cobj.setID(id);
-            cobj.setPin(pin);
-            CustomersDB cdobj=new CustomersDB();
-            rs=cdobj.getAccountdetails(cobj);
-            if(rs.next()==false)
+            if(id==0)
             {
                 JOptionPane.showMessageDialog(null,"Unauthorized User - Try again","ERROR",JOptionPane.ERROR_MESSAGE);
             }
             else
             {
-                FrameAtm atmo=new FrameAtm(id, pin);
-                atmo.show(); 
-                grabber.stop();
-                grabber.close();
-                this.dispose();
+                pin=Integer.parseInt(txtPIN.getText());
+                cobj.setID(id);
+                cobj.setPin(pin);
+                CustomersDB cdobj=new CustomersDB();
+                rs=cdobj.getAccountdetails(cobj);
+                if(rs.next()==false)
+                {
+                    JOptionPane.showMessageDialog(null,"Unauthorized User - Try again","ERROR",JOptionPane.ERROR_MESSAGE);
+                }
+                else
+                {
+                    FrameAtm atmo=new FrameAtm(id, pin);
+                    atmo.show(); 
+                    grabber.stop();
+                    grabber.close();
+                    this.dispose();
+                }
             }
-            /*rs2=cdobj.getDetails(cobj);
-            while(rs.next())
-            {
-                acc=rs.getInt(2);
-                bal=rs.getFloat(5);
-                with=rs.getFloat(6);
-            }
-            while(rs2.next())
-            {
-                name=rs2.getString(2);
-                address=rs2.getString(3);
-                mobile=rs2.getInt(4);
-            }*/
+
         }
         catch(SQLException e)
         {
             JOptionPane.showMessageDialog(null,"cannot retrive values","ERROR",JOptionPane.ERROR_MESSAGE);
             logger.log(Level.WARNING, "Cannot retrive values {0}", e);
         } catch (FrameGrabber.Exception ex) {
-            Logger.getLogger(FrameRecognizer.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.WARNING, "Cannot retrive values {0}", ex);
         }
     }
 

@@ -452,7 +452,7 @@ public class FrameNewcustomer extends javax.swing.JFrame {
         {
             JOptionPane.showMessageDialog(rootPane,"Enter valid mobile no","ERROR",JOptionPane.ERROR_MESSAGE);
         }
-        else if(noi!=8)
+        else if(noi<10)
         {
             JOptionPane.showMessageDialog(rootPane,"Capture images and add","ERROR",JOptionPane.ERROR_MESSAGE);
         }
@@ -466,14 +466,15 @@ public class FrameNewcustomer extends javax.swing.JFrame {
                 uobj.setAddress(txtAddress.getText());
                 uobj.setMobile(Integer.parseInt(txtMobile.getText()));       
                 uobj.setAccount(Integer.parseInt(txtAccountNumber.getText()));
-                String date = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+                String date = new SimpleDateFormat("ddMMyyyy").format(new Date());
                 uobj.setDate(date);
                 int row=duobj.addCustomers(uobj);
                 int row2=duobj.addAccountdet(uobj);
                 if(row>0&&row2>0)
                 {
                     JOptionPane.showMessageDialog(rootPane,"Created successfully","Created user",JOptionPane.INFORMATION_MESSAGE);
-                    FrameTraining aobj=new FrameTraining();
+                    JOptionPane.showMessageDialog(rootPane,"Please train the system","Created user",JOptionPane.INFORMATION_MESSAGE);
+                    FrameAdministrator aobj=new FrameAdministrator();
                     aobj.show();
                     grabber.stop();
                     grabber.close();
@@ -498,14 +499,28 @@ public class FrameNewcustomer extends javax.swing.JFrame {
         noi=noi+1;//count of images
         try
         {
-            if(noi<9)
+            if(noi<11)
             {
                 
-                File output=new File(".\\trainingset\\"+uid+"_"+noi+".jpg");
+                /*File output=new File(".\\trainingset\\"+uid+"_"+noi+".jpg");
                 ImageIO.write(histImg,"jpg",output);
                 writeId(uid);//method to write the labels
-                labelNoimages.setText("No.of Images - "+noi);
-                if(noi==8)
+                labelNoimages.setText("No.of Images - "+noi);*/
+                if(noi<=8)
+                {
+                    File output=new File(".\\trainingset\\"+uid+"_"+noi+".jpg");
+                    ImageIO.write(histImg,"jpg",output);
+                    writeId(uid);//method to write the labels
+                    labelNoimages.setText("No.of Images - "+noi);
+                }
+                else
+                {
+                    File output=new File(".\\testSet\\"+uid+"_"+noi+".jpg");
+                    ImageIO.write(histImg,"jpg",output);
+                    writeId(uid);//method to write the labels
+                    labelNoimages.setText("No.of Images - "+noi);
+                }
+                if(noi==10)
                     JOptionPane.showMessageDialog(rootPane,"Training images Added","Added",JOptionPane.INFORMATION_MESSAGE);
                 //i++;
             }

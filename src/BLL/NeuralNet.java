@@ -140,7 +140,7 @@ public class NeuralNet {
                     backProp.setLearningRate(lrate);
                     backProp.setMomentum(momentum);
                     backProp.setMaxError(0.01);
-                    backProp.setMaxIterations(30000);
+                    backProp.setMaxIterations(20000);
                     neuralNet.setLearningRule(backProp);
                     neuralNet.learn(trainingSet);
                     neuralNet.save(".\\faceRec.nnet");
@@ -200,11 +200,62 @@ public class NeuralNet {
                     high=i;
                 }   
             }
+            
+            if(nOutput[high]>=0.8)
+            {
+                id=high+1;
+            }
+            else
+            {
+                id=0;
+            }
             for(int i=0;i<nOutput.length;i++)
-                System.out.println(nOutput[i]);
-            id=high+1;
+                System.out.println(nOutput[i]);   
+        }   
+        catch(VectorSizeMismatchException e)
+        {
+            logger(e);
+        } catch (IOException | NumberFormatException ex) {
+            logger(ex);
         }
-        
+        return id;
+    }
+    
+    
+    public int testingFaces(double[] testImage,int outputsize)
+    {
+        DataSet newData=new DataSet(80, outputsize);
+        double[] nOutput=new double[outputsize];
+        double[] output=new double[outputsize];
+        double[] input=null;
+        Arrays.fill(output,0);
+        int high=0,id = 0,size=0;
+        try
+        {
+            newData=TrainingSetImport.importFromFile(".\\trainingSet.txt",80,outputsize,",");
+            newData.addRow(new DataSetRow(testImage,output));
+            newData.normalize(new DecimalScaleNormalizer());
+            newData.saveAsTxt("trainingSetNEWW.txt",",");
+            size=newData.size();
+            DataSetRow inputRow=newData.getRowAt(size-1);
+            input=inputRow.getInput();
+            NeuralNetwork neural=NeuralNetwork.load(".\\faceRec.nnet");
+            neural.setInput(input);
+            neural.calculate();
+            nOutput=neural.getOutput();//get the output of the neural network
+            
+            //method to get the highest id from the output 
+            for(int i=1;i<nOutput.length;i++)
+            {
+                if(nOutput[i]>=nOutput[high])
+                {
+                    high=i;
+                }   
+            }
+            id=high+1;
+            for(int i=0;i<nOutput.length;i++)
+                System.out.println(nOutput[i]);   
+        }   
         catch(VectorSizeMismatchException e)
         {
             logger(e);
@@ -228,58 +279,4 @@ public class NeuralNet {
             Logger.getLogger(FaceDetector.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
-    public static void main(String args[])
-    {
-        String x[]=trainNetwork(2,10,0.2,0.7);
-        System.out.println("Error : "+x[0]);
-        System.out.println("TotalE : "+x[1]);
-    }
-    
-    
-    /*public static void createTrainingset2(int outputSize)
-    {
-        GaborFeature gl=new GaborFeature();
-        String imgName,imgId;
-        int id,x;
-        DataSet trainingSet=new DataSet(80, outputSize);//initialize the dataset
-        BufferedImage img=null;
-        try
-        {
-        if(dir.isDirectory())
-        {
-            for(final File f: dir.listFiles(imgFilter))
-            {
-                try
-                {
-                    img = ImageIO.read(f);
-                    imgName = f.getName();//name of the image
-                    imgId = imgName.substring(0, 1);//id of the image by getting the first letter of the image
-                    id = Integer.parseInt(imgId);
-                    
-                    double[]output=new double[outputSize];
-                    Arrays.fill(output,0);
-                    output[id-1]=1;
-                    
-                    double []input=new double[80];
-                    input=gl.getFeature(img);
-                    /*do the gabor filtering and extract the features and put to dataset
-                    trainingSet.addRow(new DataSetRow(input,output));
-                    System.out.println((output.length));
-                }
-                catch(IOException | NumberFormatException | VectorSizeMismatchException e)
-                {
-                    //logger(e);
-                }
-            }
-        }
-                trainingSet.normalize(new DecimalScaleNormalizer());
-                trainingSet.saveAsTxt("trainingdataSet.txt",",");
-                testTra=trainingSet;
-        }
-        catch(Exception ex)
-        {
-            //logger(ex);
-        }
-    }*/
 }

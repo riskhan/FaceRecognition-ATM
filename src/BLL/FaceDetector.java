@@ -6,11 +6,6 @@
 
 package BLL;
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.logging.FileHandler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 import static org.bytedeco.javacpp.helper.opencv_objdetect.cvHaarDetectObjects;
 import org.bytedeco.javacpp.opencv_core;
